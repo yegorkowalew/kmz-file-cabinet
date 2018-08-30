@@ -2,5 +2,5 @@
 kmz-file-cabinet
 
 - Django
--- django-mptt
+  - django-mptt
 - Bootstrap
