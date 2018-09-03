@@ -39,6 +39,13 @@ class Unit(models.Model):
                             verbose_name="Комментарий", 
                             blank = True, 
     )
+    members = models.ManyToManyField(
+        'self',
+        through='Membership',
+        symmetrical=False,
+        related_name='related_to'
+        )
+
     def __unicode__(self):
         return self.name % self.id
     def __str__(self):
@@ -47,21 +54,10 @@ class Unit(models.Model):
         ordering = ["name"]
         verbose_name_plural = "Узлы"
 
-class Group(models.Model):
-    name = models.CharField(max_length=128)
-    members = models.ManyToManyField(
-        'Group',
-        through='Membership',
-        # through_fields=('group',),
-    )
-
 class Membership(models.Model):
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    # group2 = models.ForeignKey(Group, on_delete=models.CASCADE)
-    # unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
-    inviter = models.ForeignKey(
-        Group,
-        on_delete=models.CASCADE,
-        related_name="membership_group",
-    )
+    from_u = models.ForeignKey(Unit, related_name='from_unit', on_delete=models.CASCADE)
+    to_u = models.ForeignKey(Unit, related_name='to_unit', on_delete=models.CASCADE)
+    
     invite_reason = models.CharField(max_length=64)
+    class Meta:
+        unique_together = ('from_u', 'to_u')
