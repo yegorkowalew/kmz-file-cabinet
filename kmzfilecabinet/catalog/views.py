@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
 
-from .models import Unit
+from .models import Unit, Detail
 from django.contrib.admin.models import LogEntry
 
 def index(request):
@@ -13,9 +13,11 @@ def index(request):
         print(i.user, '', i.action_time, '', i.object_repr, '', i.action_flag, '', i.change_message)
     title = "Главная"
     len_unit = len(Unit.objects.all())
+    len_detail = len(Detail.objects.all())
     return TemplateResponse(request, 'index.html', {'output': Unit.objects.order_by('-edit_date'), 
                                                     'title':title, 
                                                     'len_unit':len_unit,
+                                                    'len_detail':len_detail,
                                                     'admin_log':admin_log,
                                                     })
 

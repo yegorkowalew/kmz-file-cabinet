@@ -1,10 +1,18 @@
 from django.db import models
 
-# Create your models here.
+import re
+
+def clear_string(str):
+    """ Очистить строку от лишних символов. Первая буква заглавной """
+    for char in '?.!/;:,':
+        str = str.replace(char,'') 
+    return re.sub(r'\s+', ' ', str.strip().lower().capitalize())
+
 class PreName(models.Model):
     name = models.CharField("Название", 
                             max_length=30,
-                            help_text="Название типа узла"
+                            help_text="Название типа узла",
+                            unique = True,
                             )
     def __str__(self):
             return self.name
@@ -12,6 +20,9 @@ class PreName(models.Model):
         ordering = ["name"]
         verbose_name = "тип узла"
         verbose_name_plural = "типы узлов"
+    def save(self):
+        self.name = clear_string(self.name)
+        super(PreName, self).save()
 
 class Unit(models.Model):
     # Инвентарный номер на титульной странице, дата? "Экз №" - оригинален?
@@ -49,11 +60,19 @@ class Unit(models.Model):
         symmetrical=False,
         related_name='related_to'
         )
+    detail = models.ManyToManyField(
+        'Detail',
+        through='Memberdetail',
+        symmetrical=False,
+        related_name='related_to'
+        )
 
     def __unicode__(self):
         return self.name % self.id
+
     def __str__(self):
-            return self.name+' ('+self.prename.name+')'
+            return '%s -> %s' % (self.name, self.prename.name)
+
     class Meta:
         ordering = ["name"]
         verbose_name = "узел"
@@ -78,8 +97,7 @@ class Membership(models.Model):
         verbose_name = "вложенный узел"
         verbose_name_plural = "вложенные узлы"
     def __str__(self):
-            return self.from_u.name+' -> '+self.from_u.name+' ('+str(self.amount)+'шт.)'
-
+            return '%s -> %s (%s)' % (self.from_u.name, self.from_u.name, str(self.amount))
 
 class Metaltype(models.Model):
     name = models.CharField(max_length=50,
@@ -89,6 +107,8 @@ class Metaltype(models.Model):
         ordering = ["name"]
         verbose_name = "тип металла"
         verbose_name_plural = "типы металлов"
+    def __str__(self):
+            return self.name
 
 class Сoatingclass(models.Model):
     name = models.CharField(max_length=50,
@@ -98,6 +118,8 @@ class Сoatingclass(models.Model):
         ordering = ["name"]
         verbose_name = "класс покрытия"
         verbose_name_plural = "классы покрытия"
+    def __str__(self):
+            return self.name
 
 class Shop(models.Model):
     text_name = models.CharField(max_length=50,
@@ -110,16 +132,27 @@ class Shop(models.Model):
         ordering = ["num_name"]
         verbose_name = "цех"
         verbose_name_plural = "цехи"
+    def __str__(self):
+            return '%s (%s)' % (self.num_name, self.text_name)
+    def save(self):
+        self.text_name = clear_string(self.text_name)
+        super(Shop, self).save()
 
 
 class Operation(models.Model):
     text_name = models.CharField(max_length=50,
                             unique = True,
+                            verbose_name = "Название"
                             )
     class Meta:
         ordering = ["text_name"]
         verbose_name = "операция"
         verbose_name_plural = "операции"
+    def __str__(self):
+            return self.text_name
+    def save(self):
+        self.text_name = clear_string(self.text_name)
+        super(Operation, self).save()
 
 class Detail(models.Model):
     nom_num = models.CharField(max_length=50,
@@ -138,7 +171,7 @@ class Detail(models.Model):
                             verbose_name="cdw файл", 
                             blank = True, 
                             )
-    part_weight = models.PositiveIntegerField(verbose_name="Теоретический вес детали", 
+    part_weight = models.FloatField(verbose_name="Теоретический вес детали", 
                                                 )
     metaltype = models.ForeignKey(
                             'Metaltype',
@@ -164,3 +197,30 @@ class Detail(models.Model):
                             # auto_now=True,
                             )
     
+    class Meta:
+        ordering = ["nom_num"]
+        verbose_name = "деталь"
+        verbose_name_plural = "детали"
+    def __str__(self):
+            return self.nom_num
+
+class Memberdetail(models.Model):
+    from_u = models.ForeignKey(Unit, 
+                                related_name='from_unit_to_detail', 
+                                on_delete=models.CASCADE,
+                                verbose_name="Родитель", 
+                                )
+    to_u = models.ForeignKey(Detail, 
+                                related_name='to_detail', 
+                                on_delete=models.CASCADE,
+                                verbose_name="Вложенная деталь", 
+                                )
+    
+    amount = models.PositiveIntegerField(verbose_name="Количество", 
+                                        )
+    class Meta:
+        unique_together = ('from_u', 'to_u')
+        verbose_name = "вложенная деталь"
+        verbose_name_plural = "вложенные детали"
+    def __str__(self):
+            return '%s -> %s (%s)' % (self.from_u.name, self.to_u.nom_num, str(self.amount))

@@ -7,11 +7,16 @@ class TermInlineAdmin(admin.TabularInline):
     model = Unit.members.through
     fk_name = 'from_u'
 
+class DetailInlineAdmin(admin.TabularInline):
+    model = Unit.detail.through
+    fk_name = 'from_u'
+
 class UnitAdmin(admin.ModelAdmin):
     fields = (('prename', 'name'), ('titul_file'), 'comment')
     list_display = ('name', 'prename', 'edit_date')
     search_fields = ['name']
-    inlines = (TermInlineAdmin,)
+    inlines = (TermInlineAdmin, DetailInlineAdmin,)
+    # inlines = ()
 
 class MembershipAdmin(admin.ModelAdmin):
     fields = ('amount', 'from_u', 'to_u')
