@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.db import models
-# Register your models here.
 
-from .models import Unit, PreName, Membership
+from .models import Unit, PreName, Membership, Metaltype, Сoatingclass, Shop, Operation, Detail
 
 class TermInlineAdmin(admin.TabularInline):
     model = Unit.members.through
@@ -14,23 +13,15 @@ class UnitAdmin(admin.ModelAdmin):
     search_fields = ['name']
     inlines = (TermInlineAdmin,)
 
-
-# class GroupAdmin(admin.ModelAdmin):
-#     fields = ('name',)
-#     inlines = (TermInlineAdmin,)
-    # list_display = ('name', 'prename', 'edit_date')
-    # search_fields = ['name']
-    # inlines = (TermInlineAdmin,)
-
 class MembershipAdmin(admin.ModelAdmin):
-    fields = ('invite_reason', 'from_u', 'to_u')
-    
-    # list_display = ('name', 'prename', 'edit_date')
-    # search_fields = ['name']
+    fields = ('amount', 'from_u', 'to_u')
 
 
 admin.site.register(Unit, UnitAdmin)
-# admin.site.register(Group, GroupAdmin)
 admin.site.register(Membership, MembershipAdmin)
-
 admin.site.register(PreName)
+admin.site.register(Metaltype)
+admin.site.register(Сoatingclass)
+admin.site.register(Shop)
+admin.site.register(Operation)
+admin.site.register(Detail)
