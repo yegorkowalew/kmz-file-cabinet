@@ -154,6 +154,20 @@ class Operation(models.Model):
         self.text_name = clear_string(self.text_name)
         super(Operation, self).save()
 
+class MemberShop(models.Model):
+    from_u = models.ForeignKey('Detail', 
+                                related_name='from_detail_to_shop', 
+                                on_delete=models.CASCADE,
+                                verbose_name="Родитель", 
+                                )
+    to_u = models.ForeignKey(Shop, 
+                                related_name='to_shop', 
+                                on_delete=models.CASCADE,
+                                verbose_name="Цех", 
+                                )
+    
+    amount = models.PositiveIntegerField(verbose_name="Количество",)
+
 class Detail(models.Model):
     nom_num = models.CharField(max_length=50,
                             unique = True,
@@ -192,11 +206,19 @@ class Detail(models.Model):
                             auto_now=True,
                             )
     # росцеховка
+    # shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
+    shop = models.ManyToManyField(
+        'Shop',
+        through='MemberShop',
+        symmetrical=False,
+        related_name='related_to'
+        )
+
     detail_date = models.DateField(
                             verbose_name="Дата редактирования детали", 
                             # auto_now=True,
                             )
-    
+
     class Meta:
         ordering = ["nom_num"]
         verbose_name = "деталь"
