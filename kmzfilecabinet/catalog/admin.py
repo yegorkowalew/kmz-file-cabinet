@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import models
 
-from .models import Unit, PreName, Membership, Metaltype, Сoatingclass, Shop, Operation, Detail
+from .models import Unit, PreName, Membership, Metaltype, Сoatingclass, Shop, Operation, Detail, MemberShop
 
 class TermInlineAdmin(admin.TabularInline):
     model = Unit.members.through
@@ -21,9 +21,12 @@ class UnitAdmin(admin.ModelAdmin):
 class MembershipAdmin(admin.ModelAdmin):
     fields = ('amount', 'from_u', 'to_u')
 
+class MemberShopAdmin(admin.ModelAdmin):
+    fields = ('amount', 'from_u', 'to_u')
 
 admin.site.register(Unit, UnitAdmin)
 admin.site.register(Membership, MembershipAdmin)
+admin.site.register(MemberShop, MemberShopAdmin)
 admin.site.register(PreName)
 admin.site.register(Metaltype)
 admin.site.register(Сoatingclass)

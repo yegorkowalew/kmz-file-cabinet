@@ -165,8 +165,13 @@ class MemberShop(models.Model):
                                 on_delete=models.CASCADE,
                                 verbose_name="Цех", 
                                 )
-    
-    amount = models.PositiveIntegerField(verbose_name="Количество",)
+    amount = models.PositiveIntegerField(verbose_name="очередь",)
+    class Meta:
+        unique_together = ('from_u', 'to_u')
+        verbose_name = "вложенный цех"
+        verbose_name_plural = "вложенные цехи"
+    def __str__(self):
+            return '%s -> %s (%s)' % (self.from_u.nom_num, self.to_u.text_name, str(self.amount))
 
 class Detail(models.Model):
     nom_num = models.CharField(max_length=50,
