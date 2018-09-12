@@ -3,6 +3,10 @@ from django.db import models
 
 from .models import Unit, PreName, Membership, Metaltype, Сoatingclass, Shop, Operation, Detail, MemberShop
 
+class MemberShopInlineAdmin(admin.TabularInline):
+    model = Detail.shop.through
+    fk_name = 'from_u'
+
 class TermInlineAdmin(admin.TabularInline):
     model = Unit.members.through
     fk_name = 'from_u'
@@ -18,18 +22,22 @@ class UnitAdmin(admin.ModelAdmin):
     inlines = (TermInlineAdmin, DetailInlineAdmin,)
     # inlines = ()
 
+class DetailAdmin(admin.ModelAdmin):
+    fields = ('nom_num', ('file_pdf', 'file_jpg', 'file_cdw'), ('part_weight'), ('metaltype', 'сoatingclass'), ('detail_date'),)
+    # list_display = ('name', 'prename', 'edit_date')
+    search_fields = ['nom_num']
+    inlines = (MemberShopInlineAdmin,)
+    # inlines = ()
+
 class MembershipAdmin(admin.ModelAdmin):
     fields = ('amount', 'from_u', 'to_u')
 
-class MemberShopAdmin(admin.ModelAdmin):
-    fields = ('amount', 'from_u', 'to_u')
-
 admin.site.register(Unit, UnitAdmin)
-admin.site.register(Membership, MembershipAdmin)
-admin.site.register(MemberShop, MemberShopAdmin)
+# admin.site.register(Membership, MembershipAdmin)
+# admin.site.register(MemberShop)
 admin.site.register(PreName)
 admin.site.register(Metaltype)
 admin.site.register(Сoatingclass)
 admin.site.register(Shop)
 admin.site.register(Operation)
-admin.site.register(Detail)
+admin.site.register(Detail, DetailAdmin)

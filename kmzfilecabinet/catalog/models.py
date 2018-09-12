@@ -216,7 +216,7 @@ class Detail(models.Model):
         'Shop',
         through='MemberShop',
         symmetrical=False,
-        related_name='related_to'
+        related_name='related_to_shop'
         )
 
     detail_date = models.DateField(
