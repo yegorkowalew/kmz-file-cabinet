@@ -125,3 +125,52 @@ STATICFILES_DIRS = [
     'C:/work/kmz-file-cabinet/kmzfilecabinet/static/',
 ]
 # MEDIA_ROOT = "".join(os.path.join(os.path.dirname(file), 'media').replace('\','/'))
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            # 'format': '{asctime} {levelname} {module} {message}',
+             'format': '%(levelname)-8s [%(asctime)s] [%(name)s.%(funcName)s] [LINE:%(lineno)d] - %(message)s',
+            #  'format': "'%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S'",
+            #  (format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'filename': 'debug.log',
+        },
+        'console': {
+            'level': 'DEBUG',
+            # 'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'filecatalog': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'catalog.log',
+            'formatter': 'simple'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'catalog': {
+            'handlers': ['filecatalog', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

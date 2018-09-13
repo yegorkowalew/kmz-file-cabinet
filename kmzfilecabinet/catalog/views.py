@@ -6,12 +6,16 @@ from django.template.response import TemplateResponse
 
 from .models import Unit, Detail
 from django.contrib.admin.models import LogEntry
+import logging
+logger = logging.getLogger('catalog')
 
 def index(request):
+    logger.info('Index page visited. User: %s' % (request.user))
     admin_log = LogEntry.objects.order_by('-action_time')[:25]
     title = "Главная"
     len_unit = Unit.objects.count()
     len_detail = Detail.objects.count()
+    # logger.debug(Unit.objects.all())
     return TemplateResponse(request, 'index.html', {'output': Unit.objects.order_by('-edit_date'), 
                                                     'title':title, 
                                                     'len_unit':len_unit,
