@@ -14,5 +14,9 @@ urlpatterns = [
     path('units/byprenamea', views.unitsprenamea, name='units'),
     path('units/byprenamez', views.unitsprenamez, name='units'),
 
-
+    path('details', views.details, name='details'),
+    path('details/bynamea', views.detailsnamea, name='details'),
+    path('details/bynamez', views.detailsnamez, name='details'),
+    path('details/bydatenew', views.detailsdatenew, name='details'),
+    path('details/bydateold', views.detailsdateold, name='details'),
 ]

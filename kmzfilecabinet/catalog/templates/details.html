@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}KMZ File cabinet - {{title}}{% endblock %}
+{% block content %}
+      <div class="row" style="padding-top:20px">
+        <div class="col-md-8">
+          <div class="row">
+          {% if output %}
+            {% for q in output %}
+              <div class="col-md-6" style="text-align: right;"><b><a href="{{ q.get_absolute_url }}">{{ q.nom_num }}</a></b></div>
+                {% endfor %}
+        {% else %}
+          <p>Нет ничего для отображения.</p>
+        {% endif %}
+          </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                    <div class="card-header">
+                            <h6 class="my-0 font-weight-normal">Сортировка</h6>
+                        </div>
+                <div class="card-body">
+                  <a href="/details/bynamea" class="btn btn-secondary btn-sm btn-block" role="button" aria-pressed="true">По номеру: А-Я</a>
+                  <a href="/details/bynamez" class="btn btn-secondary btn-sm btn-block" role="button" aria-pressed="true">По номеру: Я-А</a>
+                  <a href="/details/bydatenew" class="btn btn-secondary btn-sm btn-block" role="button" aria-pressed="true">По дате: сначала новые</a>
+                  <a href="/details/bydateold" class="btn btn-secondary btn-sm btn-block" role="button" aria-pressed="true">По дате: сначала старые</a>
+                </div>
+            </div>
+
+        </div>
+      </div>
+{% endblock %}

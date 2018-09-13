@@ -17,7 +17,6 @@ def index(request):
     title = "Главная"
     len_unit = Unit.objects.count()
     len_detail = Detail.objects.count()
-    # logger.debug(Unit.objects.all())
     logger.info('"%s" page visited. User: %s' % (title, request.user))
     return TemplateResponse(request, 'index.html', {'output': Unit.objects.order_by('-edit_date'), 
                                                     'title':title, 
@@ -25,6 +24,9 @@ def index(request):
                                                     'len_detail':len_detail,
                                                     'admin_log':admin_log,
                                                     })
+"""
+Выборки по узлам
+"""
 
 def units(request):
     """
@@ -86,3 +88,48 @@ def unitsprenamez(request):
     req = Unit.objects.order_by('-prename')
     return TemplateResponse(request, 'unitsprenamez.html', {'output': req, 'title':title})
 
+"""
+Выборки по деталям
+"""
+
+def details(request):
+    """
+    Главная страница. Выборки: количество узлов, деталей. Лог админки.
+    """
+    title = "Детали"
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    return TemplateResponse(request, 'details.html', {'output': Detail.objects.order_by('-edit_date'), 'title':title})
+
+def detailsnamea(request):
+    """
+    Детали. По имени: А-Я
+    """
+    title = "Детали. По имени: А-Я"
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    req = Detail.objects.order_by('nom_num')
+    return TemplateResponse(request, 'detailsnamea.html', {'output': req, 'title':title})
+
+def detailsnamez(request):
+    """
+    Детали. По имени: Я-А
+    """
+    title = "Детали. По имени: Я-А"
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    req = Detail.objects.order_by('-nom_num')
+    return TemplateResponse(request, 'detailsnamez.html', {'output': req, 'title':title})
+
+def detailsdatenew(request):
+    """
+    Детали. По дате: сначала новые. Выборки: узлы по дате
+    """
+    title = "Детали. Сортировка по дате: сначала новые."
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    return TemplateResponse(request, 'detailsdatenew.html', {'output': Detail.objects.order_by('edit_date'), 'title':title})
+
+def detailsdateold(request):
+    """
+    Детали. По дате: сначала старые. Выборки: узлы по дате
+    """
+    title = "Детали. Сортировка по дате: сначала старые."
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    return TemplateResponse(request, 'detailsdateold.html', {'output': Detail.objects.order_by('-edit_date'), 'title':title})

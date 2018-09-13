@@ -6,7 +6,7 @@
           <div class="row">
           {% if output %}
             {% for q in output %}
-            <div class="col-md-6" style="text-align: right;">{{ q.prename }} <b><a href="/units/{{ q.id }}/">{{ q.name }}</a></b></div>
+            <div class="col-md-6" style="text-align: right;">{{ q.prename }} <b><a href="{{ q.get_absolute_url }}">{{ q.name }}</a></b></div>
                 {% endfor %}
         {% else %}
         <p>No polls are available.</p>

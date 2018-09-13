@@ -32,7 +32,7 @@ class Unit(models.Model):
                             )
     prename = models.ForeignKey(
                             'PreName',
-                            verbose_name="Тип узла", 
+                            verbose_name="Тип узла",
                             max_length=30,
                             help_text="Обязательное поле",
                             on_delete=models.CASCADE,
@@ -72,6 +72,9 @@ class Unit(models.Model):
 
     def __str__(self):
             return '%s -> %s' % (self.name, self.prename.name)
+    
+    def get_absolute_url(self):
+        return "/units/%i/" % self.id
 
     class Meta:
         ordering = ["name"]
@@ -137,7 +140,6 @@ class Shop(models.Model):
     def save(self):
         self.text_name = clear_string(self.text_name)
         super(Shop, self).save()
-
 
 class Operation(models.Model):
     text_name = models.CharField(max_length=50,
@@ -230,6 +232,8 @@ class Detail(models.Model):
         verbose_name_plural = "детали"
     def __str__(self):
             return self.nom_num
+    def get_absolute_url(self):
+        return "/details/%i/" % self.id
 
 class Memberdetail(models.Model):
     from_u = models.ForeignKey(Unit, 
