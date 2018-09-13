@@ -10,8 +10,8 @@ from django.contrib.admin.models import LogEntry
 def index(request):
     admin_log = LogEntry.objects.order_by('-action_time')[:25]
     title = "Главная"
-    len_unit = Unit.objects.count() #len(Unit.objects.all())
-    len_detail = Detail.objects.count() #len(Detail.objects.all())
+    len_unit = Unit.objects.count()
+    len_detail = Detail.objects.count()
     return TemplateResponse(request, 'index.html', {'output': Unit.objects.order_by('-edit_date'), 
                                                     'title':title, 
                                                     'len_unit':len_unit,

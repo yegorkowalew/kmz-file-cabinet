@@ -1,23 +1,19 @@
 {% extends "base.html" %}
 {% block title %}KMZ File cabinet - {{title}}{% endblock %}
 {% block content %}
-<div class="row">
-    <div class="col-md-8">
-        <div class="col-md-3" style="">
-                <div class="card-body" style="text-align: right">
-                        {% if output %}
-                        <ul class="list-unstyled">{% for q in output %}
-                                <li>{{ q.prename }} <a href="/units/{{ q.id }}/">{{ q.name }}</a></li>
-                            {% endfor %}</ul>
-                        {% else %}
-                        <p>No polls are available.</p>
-                        {% endif %}
-                        <!-- {% lorem 3 p %} -->
-                </div>
+      <div class="row" style="padding-top:20px">
+        <div class="col-md-8">
+          <div class="row">
+          {% if output %}
+            {% for q in output %}
+            <div class="col-md-6" style="text-align: right;">{{ q.prename }} <b><a href="/units/{{ q.id }}/">{{ q.name }}</a></b></div>
+                {% endfor %}
+        {% else %}
+        <p>No polls are available.</p>
+        {% endif %}
+          </div>
         </div>
-
-    </div>
-    <div class="col-md-4" style="float: left; padding-top: 20px; min-width: 200px;">
+        <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
                     <div class="card-header">
                             <h6 class="my-0 font-weight-normal">Сортировка</h6>
@@ -28,7 +24,6 @@
                 </div>
             </div>
 
-    </div>
-</div>
-
+        </div>
+      </div>
 {% endblock %}
