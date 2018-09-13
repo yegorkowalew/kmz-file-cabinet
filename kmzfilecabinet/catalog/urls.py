@@ -19,4 +19,6 @@ urlpatterns = [
     path('details/bynamez', views.detailsnamez, name='details'),
     path('details/bydatenew', views.detailsdatenew, name='details'),
     path('details/bydateold', views.detailsdateold, name='details'),
+
+    path('catalog/', views.catalog, name='catalog'),
 ]

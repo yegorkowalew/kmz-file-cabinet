@@ -24,6 +24,33 @@ def index(request):
                                                     'len_detail':len_detail,
                                                     'admin_log':admin_log,
                                                     })
+
+def catalog(request):
+    """
+    Главная страница. Выборки: количество узлов, деталей. Лог админки.
+    """
+    admin_log = LogEntry.objects.order_by('-action_time')[:25]
+    title = "Каталог"
+    unit_all = Unit.objects.values("name", "id")
+    # Entry.objects.only("headline", "body").defer("body")
+
+    # len_detail = Detail.objects.count()
+    # logger.info('"%s" page visited. User: %s' % (title, request.user))
+    # logger.debug(unit_all)
+    cc = unit_all
+    for i in cc:
+        for key in i.keys():
+            if key == 'name':
+                key = 'num_name'
+    logger.debug(cc)
+    
+    return TemplateResponse(request, 'index.html', {'title':title, 
+                                                    # 'len_unit':len_unit,
+                                                    # 'len_detail':len_detail,
+                                                    # 'admin_log':admin_log,
+                                                    })
+
+
 """
 Выборки по узлам
 """
