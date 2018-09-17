@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.db.models import F, Value
+from django.db.models.functions import Concat
 
 # Create your views here.
 from django.http import HttpResponse
@@ -7,6 +9,9 @@ from django.template.response import TemplateResponse
 from .models import Unit, Detail
 from django.contrib.admin.models import LogEntry
 import logging
+
+from django.core.paginator import Paginator
+
 logger = logging.getLogger('catalog')
 
 def index(request):
@@ -27,28 +32,32 @@ def index(request):
 
 def catalog(request):
     """
-    Главная страница. Выборки: количество узлов, деталей. Лог админки.
+    Страница каталога. Объединяю в одну выборку модели Details и Units
     """
     admin_log = LogEntry.objects.order_by('-action_time')[:25]
     title = "Каталог"
-    unit_all = Unit.objects.values("name", "id")
-    # Entry.objects.only("headline", "body").defer("body")
 
-    # len_detail = Detail.objects.count()
-    # logger.info('"%s" page visited. User: %s' % (title, request.user))
-    # logger.debug(unit_all)
-    cc = unit_all
-    for i in cc:
-        for key in i.keys():
-            if key == 'name':
-                key = 'num_name'
-    logger.debug(cc)
-    
-    return TemplateResponse(request, 'index.html', {'title':title, 
-                                                    # 'len_unit':len_unit,
-                                                    # 'len_detail':len_detail,
-                                                    # 'admin_log':admin_log,
-                                                    })
+    from itertools import chain 
+    unit_all = Unit.objects.annotate(url=Concat(Value('/units/'), F('pk')))
+    unit_all.values("name", "url")
+    detail_all = Detail.objects.annotate(name=F('nom_num'), url=Concat(Value('/details/'), F('pk')))
+    unit_all.values("name", "url")
+    result_list = list(chain(unit_all, detail_all))
+
+    paginator = Paginator(result_list, 5) # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+
+    return render(request, 'catalog.html', {'result_list':result_list,})
+
+    # return TemplateResponse(request, 'catalog.html', {'title':title, 
+    #                                                 'result_list':result_list,
+    #                                                 # 'len_detail':len_detail,
+    #                                                 # 'admin_log':admin_log,
+    #                                                 })
 
 
 """
