@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}KMZ File cabinet - {{title}}{% endblock %}
+{% block content %}
+      <div class="row" style="padding-top:20px">
+        <div class="col-md-8">
+          <div class="row">
+          {% if output %}
+            {% for q in output %}
+            <div class="col-md-6" style="text-align: right;">{{ q.prename }} <b><a href="{{ q.get_absolute_url }}">{{ q.name }}</a></b></div>
+                {% endfor %}
+        {% else %}
+        <p>No polls are available.</p>
+        {% endif %}
+          </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                    <div class="card-header">
+                            <h6 class="my-0 font-weight-normal">Сортировка</h6>
+                        </div>
+                <div class="card-body">
+                  <a href="/units/bynamea" class="btn btn-secondary btn-sm btn-block" role="button" aria-pressed="true">По номеру: А-Я</a>
+                  <a href="/units/bynamez" class="btn btn-secondary btn-sm btn-block" role="button" aria-pressed="true">По номеру: Я-А</a>
+                  <a href="/units/bydatenew" class="btn btn-secondary btn-sm btn-block" role="button" aria-pressed="true">По дате: сначала новые</a>
+                  <a href="/units/bydateold" class="btn btn-secondary btn-sm btn-block" role="button" aria-pressed="true">По дате: сначала старые</a>
+                  <a href="/units/byprenamea" class="btn btn-secondary btn-sm btn-block" role="button" aria-pressed="true">По типу: А-Я</a>
+                  <a href="/units/byprenamez" class="btn btn-secondary btn-sm btn-block" role="button" aria-pressed="true">По типу: Я-А</a>
+                </div>
+            </div>
+
+        </div>
+      </div>
+{% endblock %}

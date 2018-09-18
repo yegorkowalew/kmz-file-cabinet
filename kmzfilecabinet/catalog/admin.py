@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import models
 
-from .models import Unit, PreName, Membership, Metaltype, Сoatingclass, Shop, Operation, Detail, MemberShop
+from .models import Unit, PreName, Membership, Metaltype, Сoatingclass, Shop, Operation, Detail, MemberShop, AbbrName
 
 class MemberShopInlineAdmin(admin.TabularInline):
     model = Detail.shop.through
@@ -16,7 +16,7 @@ class DetailInlineAdmin(admin.TabularInline):
     fk_name = 'from_u'
 
 class UnitAdmin(admin.ModelAdmin):
-    fields = (('prename', 'name'), ('titul_file'), 'comment')
+    fields = (('abbrname', 'prename', 'name'), ('titul_file'), 'comment')
     list_display = ('name', 'prename', 'edit_date')
     search_fields = ['name']
     inlines = (TermInlineAdmin, DetailInlineAdmin,)
@@ -40,4 +40,5 @@ admin.site.register(Metaltype)
 admin.site.register(Сoatingclass)
 admin.site.register(Shop)
 admin.site.register(Operation)
+admin.site.register(AbbrName)
 admin.site.register(Detail, DetailAdmin)

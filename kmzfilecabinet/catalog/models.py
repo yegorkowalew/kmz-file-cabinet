@@ -8,6 +8,22 @@ def clear_string(str):
         str = str.replace(char,'') 
     return re.sub(r'\s+', ' ', str.strip().lower().capitalize())
 
+class AbbrName(models.Model):
+    name = models.CharField("Аббревиатура узла", 
+                            max_length=30,
+                            help_text="Аббревиатура узла",
+                            unique = True,
+                            )
+    def __str__(self):
+            return self.name
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "аббревиатура"
+        verbose_name_plural = "аббревиатуры"
+    def save(self):
+        self.name = clear_string(self.name)
+        super(AbbrName, self).save()
+
 class PreName(models.Model):
     name = models.CharField("Название", 
                             max_length=30,
@@ -27,8 +43,15 @@ class PreName(models.Model):
 class Unit(models.Model):
     # Инвентарный номер на титульной странице, дата? "Экз №" - оригинален?
     # "действителен на"
-    name = models.CharField(max_length=50,
-                            unique = True,
+    # ТСЦ - аббревиатура изделия
+    abbrname = models.ForeignKey(
+                            'AbbrName',
+                            verbose_name="Аббревиатура узла",
+                            max_length=30,
+                            help_text="Не обязательное поле",
+                            on_delete=models.CASCADE,
+                            blank = True,
+                            null=True,
                             )
     prename = models.ForeignKey(
                             'PreName',
@@ -39,6 +62,7 @@ class Unit(models.Model):
                             )
     name = models.CharField(
                             verbose_name="Название узла", 
+                            unique = True,
                             max_length=30,
                             help_text="Используйте формат: <em>XXX.XXX.XXX.XXX</em>."
                             )
