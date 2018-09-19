@@ -14,6 +14,8 @@ from django.core.paginator import Paginator
 
 logger = logging.getLogger('catalog')
 
+per_page = 5
+
 def index(request):
     """
     Главная страница. Выборки: количество узлов, деталей. Лог админки.
@@ -44,20 +46,13 @@ def catalog(request):
     unit_all.values("name", "url")
     result_list = list(chain(unit_all, detail_all))
 
-    paginator = Paginator(result_list, 5) # Show 25 contacts per page
+    paginator = Paginator(result_list, per_page) # Show 25 contacts per page
 
     page = request.GET.get('page')
     result_list = paginator.get_page(page)
 
     logger.info('"%s" page visited. User: %s' % (title, request.user))
-
     return render(request, 'catalog.html', {'result_list':result_list,})
-
-    # return TemplateResponse(request, 'catalog.html', {'title':title, 
-    #                                                 'result_list':result_list,
-    #                                                 # 'len_detail':len_detail,
-    #                                                 # 'admin_log':admin_log,
-    #                                                 })
 
 
 """
@@ -70,7 +65,39 @@ def units(request):
     """
     title = "Узлы"
     logger.info('"%s" page visited. User: %s' % (title, request.user))
-    return TemplateResponse(request, 'units.html', {'output': Unit.objects.order_by('-edit_date'), 'title':title})
+    result_list = Unit.objects.order_by('-edit_date')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    return render(request, 'units.html', {'result_list':result_list, 'title':title})
+
+def unitsabbra(request):
+    """
+    Узлы. По аббревиатуре: А-Я
+    """
+    title = "Узлы. По имени: А-Я"
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    result_list = Unit.objects.order_by('abbrname')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    return render(request, 'unitsabbra.html', {'result_list':result_list, 'title':title})
+
+def unitsabbrz(request):
+    """
+    Узлы. По аббревиатуре: Я-А
+    """
+    title = "Узлы. По имени: Я-А"
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+
+    result_list = Unit.objects.order_by('-abbrname')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    return render(request, 'unitsabbrz.html', {'result_list':result_list, 'title':title})
 
 def unitsnamea(request):
     """
@@ -78,8 +105,12 @@ def unitsnamea(request):
     """
     title = "Узлы. По имени: А-Я"
     logger.info('"%s" page visited. User: %s' % (title, request.user))
-    req = Unit.objects.order_by('name')
-    return TemplateResponse(request, 'unitsnamea.html', {'output': req, 'title':title})
+    result_list = Unit.objects.order_by('name')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    return render(request, 'unitsnamea.html', {'result_list':result_list, 'title':title})
 
 def unitsnamez(request):
     """
@@ -87,8 +118,13 @@ def unitsnamez(request):
     """
     title = "Узлы. По имени: Я-А"
     logger.info('"%s" page visited. User: %s' % (title, request.user))
-    req = Unit.objects.order_by('-name')
-    return TemplateResponse(request, 'unitsnamez.html', {'output': req, 'title':title})
+
+    result_list = Unit.objects.order_by('-name')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    return render(request, 'unitsnamez.html', {'result_list':result_list, 'title':title})
 
 def unitsdatenew(request):
     """
@@ -96,7 +132,13 @@ def unitsdatenew(request):
     """
     title = "Узлы. Сортировка по дате: сначала новые."
     logger.info('"%s" page visited. User: %s' % (title, request.user))
-    return TemplateResponse(request, 'unitsdatenew.html', {'output': Unit.objects.order_by('edit_date'), 'title':title})
+
+    result_list = Unit.objects.order_by('edit_date')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    return render(request, 'unitsdatenew.html', {'result_list':result_list, 'title':title})
 
 def unitsdateold(request):
     """
@@ -104,7 +146,13 @@ def unitsdateold(request):
     """
     title = "Узлы. Сортировка по дате: сначала старые."
     logger.info('"%s" page visited. User: %s' % (title, request.user))
-    return TemplateResponse(request, 'unitsdateold.html', {'output': Unit.objects.order_by('-edit_date'), 'title':title})
+
+    result_list = Unit.objects.order_by('-edit_date')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    return render(request, 'unitsdateold.html', {'result_list':result_list, 'title':title})
 
 def unitsprenamea(request):
     """
@@ -112,8 +160,13 @@ def unitsprenamea(request):
     """
     title = "Узлы. По типу: А-Я"
     logger.info('"%s" page visited. User: %s' % (title, request.user))
-    req = Unit.objects.order_by('prename')
-    return TemplateResponse(request, 'unitsprenamea.html', {'output': req, 'title':title})
+
+    result_list = Unit.objects.order_by('prename')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    return render(request, 'unitsprenamea.html', {'result_list':result_list, 'title':title})
 
 def unitsprenamez(request):
     """
@@ -121,8 +174,13 @@ def unitsprenamez(request):
     """
     title = "Узлы. По типу: Я-А"
     logger.info('"%s" page visited. User: %s' % (title, request.user))
-    req = Unit.objects.order_by('-prename')
-    return TemplateResponse(request, 'unitsprenamez.html', {'output': req, 'title':title})
+
+    result_list = Unit.objects.order_by('-prename')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    return render(request, 'unitsprenamez.html', {'result_list':result_list, 'title':title})
 
 """
 Выборки по деталям
