@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 {% block title %}KMZ File cabinet - {{title}}{% endblock %}
 {% block content %}
-      <div class="row" style="padding-top:20px">
-        <div class="col-md-8">
-
-<div class="row">
+  <div class="row" style="padding-top:10px;">
+  <div class="col">
+    <div class="row">
 {% if output %}
 <table class="table table-striped table-hover table-sm">
 <thead>
@@ -30,43 +29,49 @@
 {% else %}
 <p>No polls are available.</p>
 {% endif %}
-</div>
-
-        </div>
-        <div class="col-md-4">
-        
-<div class="btn-group btn-group-toggle" data-toggle="buttons">
-<span class="badge badge-light">Номер:</span>
-  <label class="btn btn-secondary btn-sm">
-    <input type="radio" name="options" id="option1" autocomplete="off" checked> А-Я
-  </label>
-  <label class="btn btn-secondary btn-sm">
-    <input type="radio" name="options" id="option2" autocomplete="off"> Я-А
-  </label>
-</div>
-
-<div class="btn-group btn-group-toggle" data-toggle="buttons">
-<span class="badge badge-light">Дата:</span>
-  <label class="btn btn-secondary btn-sm">
-    <input type="radio" name="options" id="option1" autocomplete="off" checked> Новые
-  </label>
-  <label class="btn btn-secondary btn-sm">
-    <input type="radio" name="options" id="option2" autocomplete="off"> Старые
-  </label>
-</div>
-
-<span class="badge badge-light">Тип:</span>
-<div class="btn-group btn-group-toggle" data-toggle="buttons">
-  <label class="btn btn-secondary btn-sm">
-    <input type="radio" name="options" id="option1" autocomplete="off" checked> А-Я
-  </label>
-  <label class="btn btn-secondary btn-sm">
-    <input type="radio" name="options" id="option2" autocomplete="off"> Я-А
-  </label>
-</div>
+    </div>
+    <div class="row justify-content-center">
+        <nav aria-label="Data navigation">
+            <ul class="pagination">
+                  <li class="page-item disabled"><a class="page-link" href="#" aria-label="First"><span aria-hidden="true">Первая</span></a></li>
+                  <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">Предыдущая</span></a></li>
+                  <li class="page-item disabled"><a class="page-link" href="?page=1">1</a></li>
+                  <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+                  <li class="page-item"><a class="page-link" href="?page=3">3</a></li>
+                  <li class="page-item"><a class="page-link" href="?page=2" aria-label="Next"><span aria-hidden="true">Следующая</span></a></li>
+                  <li class="page-item"><a class="page-link" href="?page=3" aria-label="Previous"><span aria-hidden="true">Последняя</span></a></li>
+            </ul>
+          </nav>
+    </div>
+  </div>
+  <div class="col-2">
+  <div class="row" style="padding-left: 4%">
+      <span class="w-100" style="padding-top:5px;">Аббревиатура:</span>
+      <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+          <button type="button" class="btn btn-sm btn-secondary">А-Я</button>
+          <button type="button" class="btn btn-sm btn-secondary">Я-А</button>
         </div>
 
+      <span class="w-100" style="padding-top:5px;">Тип:</span>
+      <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+          <button type="button" class="btn btn-sm btn-secondary">А-Я</button>
+          <button type="button" class="btn btn-sm btn-secondary">Я-А</button>
         </div>
-      </div>
+
+    <span class="w-100" style="padding-top:5px;">Название:</span>
+    <div class="btn-group" role="group" aria-label="filter">
+      <button type="button" class="btn btn-secondary btn-sm">А-Я</button>
+      <button type="button" class="btn btn-secondary btn-sm">Я-А</button>
+    </div>
+
+    <span class="w-100" style="padding-top:5px;">Изменен:</span>
+    <div class="btn-group" role="group" aria-label="filter">
+      <button type="button" class="btn btn-secondary btn-sm">Новые</button>
+      <button type="button" class="btn btn-secondary btn-sm">Старые</button>
+    </div>
+
+  </div>
+  </div>
+  </div>
 
 {% endblock %}
