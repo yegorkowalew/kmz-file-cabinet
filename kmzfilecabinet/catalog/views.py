@@ -553,3 +553,14 @@ def detailsdateold(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+from django.views.generic.base import TemplateView
+
+class UnitView(TemplateView):
+
+    template_name = "unit.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        un = Unit.objects.get(pk=context['unitpk'])
+        context['unit'] = un
+        return context

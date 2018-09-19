@@ -1,11 +1,18 @@
 from django.urls import path
 
 from . import views
+# from django.views.generic import TemplateView
+from catalog.views import UnitView
 
 app_name = 'catalog'
 
 urlpatterns = [
     path('', views.index, name='index'),
+
+    # path('units/$', UnitView.as_view(template_name="unit.html")),
+    
+    path('units/<int:unitpk>/', UnitView.as_view(), name='unit'),
+
     path('units/', views.units, name='units'),
     path('units/byabbra', views.unitsabbra, name='units'),
     path('units/byabbrz', views.unitsabbrz, name='units'),
@@ -15,7 +22,7 @@ urlpatterns = [
     path('units/bydateold', views.unitsdateold, name='units'),
     path('units/byprenamea', views.unitsprenamea, name='units'),
     path('units/byprenamez', views.unitsprenamez, name='units'),
-
+    
 
     path('details/', views.details, name='details'),
     path('details/bynamea', views.detailsnamea, name='details'),
