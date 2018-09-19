@@ -28,4 +28,8 @@ urlpatterns = [
     path('details/bydateold', views.detailsdateold, name='details'),
 
     path('catalog/', views.catalog, name='catalog'),
+    path('catalog/bynamea', views.catalognamea, name='catalog'),
+    path('catalog/bynamez', views.catalognamez, name='catalog'),
+    path('catalog/bydatenew', views.catalogdatenew, name='catalog'),
+    path('catalog/bydateold', views.catalogdateold, name='catalog'),
 ]

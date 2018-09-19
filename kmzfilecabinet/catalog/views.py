@@ -2,13 +2,15 @@ from django.shortcuts import render
 from django.db.models import F, Value
 from django.db.models.functions import Concat
 
-# Create your views here.
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
 
 from .models import Unit, Detail
 from django.contrib.admin.models import LogEntry
 import logging
+
+from itertools import chain
+from operator import attrgetter
 
 from django.core.paginator import Paginator
 
@@ -32,28 +34,107 @@ def index(request):
                                                     'admin_log':admin_log,
                                                     })
 
+"""
+Выборки каталога
+"""
+
 def catalog(request):
     """
     Страница каталога. Объединяю в одну выборку модели Details и Units
     """
-    admin_log = LogEntry.objects.order_by('-action_time')[:25]
     title = "Каталог"
-
-    from itertools import chain 
+    
     unit_all = Unit.objects.annotate(url=Concat(Value('/units/'), F('pk')))
-    unit_all.values("name", "url")
     detail_all = Detail.objects.annotate(name=F('nom_num'), url=Concat(Value('/details/'), F('pk')))
-    unit_all.values("name", "url")
     result_list = list(chain(unit_all, detail_all))
 
-    paginator = Paginator(result_list, per_page) # Show 25 contacts per page
+    paginator = Paginator(result_list, per_page)
 
     page = request.GET.get('page')
     result_list = paginator.get_page(page)
 
     logger.info('"%s" page visited. User: %s' % (title, request.user))
-    return render(request, 'catalog.html', {'result_list':result_list,})
+    return render(request, 'catalog.html', {'result_list':result_list, 'title':title,})
 
+def catalognamea(request):
+    """
+    Страница каталога. Объединяю в одну выборку модели Details и Units. Сортирую по имени
+    """
+    title = "Каталог. По имени: А-Я"
+    
+    unit_all = Unit.objects.annotate(url=Concat(Value('/units/'), F('pk')))
+    detail_all = Detail.objects.annotate(name=F('nom_num'), url=Concat(Value('/details/'), F('pk')))
+    result_list = sorted(
+        chain(unit_all, detail_all),
+        key=attrgetter('name'))
+
+    paginator = Paginator(result_list, per_page)
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    return render(request, 'catalognamea.html', {'result_list':result_list, 'title':title,})
+
+def catalognamez(request):
+    """
+    Страница каталога. Объединяю в одну выборку модели Details и Units. Сортирую по имени в обратном порядке
+    """
+    title = "Каталог. По имени: Я-А"
+    
+    unit_all = Unit.objects.annotate(url=Concat(Value('/units/'), F('pk')))
+    detail_all = Detail.objects.annotate(name=F('nom_num'), url=Concat(Value('/details/'), F('pk')))
+    result_list = sorted(
+        chain(unit_all, detail_all),
+        key=attrgetter('name'), reverse=True)
+
+    paginator = Paginator(result_list, per_page)
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    return render(request, 'catalognamez.html', {'result_list':result_list, 'title':title,})
+
+def catalogdatenew(request):
+    """
+    Страница каталога. Объединяю в одну выборку модели Details и Units. Сортирую по дате
+    """
+    title = "Каталог. По дате: сначала новые"
+    
+    unit_all = Unit.objects.annotate(url=Concat(Value('/units/'), F('pk')))
+    detail_all = Detail.objects.annotate(name=F('nom_num'), url=Concat(Value('/details/'), F('pk')))
+    result_list = sorted(
+        chain(unit_all, detail_all),
+        key=attrgetter('edit_date'))
+
+    paginator = Paginator(result_list, per_page)
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    return render(request, 'catalogdatenew.html', {'result_list':result_list, 'title':title,})
+
+def catalogdateold(request):
+    """
+    Страница каталога. Объединяю в одну выборку модели Details и Units. Сортирую по дате в обратном порядке
+    """
+    title = "Каталог. По дате: сначала старые"
+    
+    unit_all = Unit.objects.annotate(url=Concat(Value('/units/'), F('pk')))
+    detail_all = Detail.objects.annotate(name=F('nom_num'), url=Concat(Value('/details/'), F('pk')))
+    result_list = sorted(
+        chain(unit_all, detail_all),
+        key=attrgetter('edit_date'), reverse=True)
+
+    paginator = Paginator(result_list, per_page)
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    return render(request, 'catalogdateold.html', {'result_list':result_list, 'title':title,})
 
 """
 Выборки по узлам
