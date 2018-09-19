@@ -19,6 +19,11 @@ urlpatterns = [
     path('details', views.details, name='details'),
     path('details/bynamea', views.detailsnamea, name='details'),
     path('details/bynamez', views.detailsnamez, name='details'),
+    path('details/bymetaltypea', views.metaltypea, name='details'),
+    path('details/bymetaltypez', views.metaltypez, name='details'),
+    path('details/byсoatingclassa', views.сoatingclassa, name='details'),
+    path('details/byсoatingclassz', views.сoatingclassz, name='details'),
+
     path('details/bydatenew', views.detailsdatenew, name='details'),
     path('details/bydateold', views.detailsdateold, name='details'),
 

@@ -1,31 +1,93 @@
 {% extends "base.html" %}
 {% block title %}KMZ File cabinet - {{title}}{% endblock %}
 {% block content %}
-      <div class="row" style="padding-top:20px">
-        <div class="col-md-8">
-          <div class="row">
-          {% if output %}
-            {% for q in output %}
-            <div class="col-md-6" style="text-align: right;"><b><a href="{{ q.get_absolute_url }}">{{ q.nom_num }}</a></b></div>
-                {% endfor %}
-        {% else %}
-          <p>Нет ничего для отображения.</p>
-        {% endif %}
-          </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                    <div class="card-header">
-                            <h6 class="my-0 font-weight-normal">Сортировка</h6>
-                        </div>
-                <div class="card-body">
-                  <a href="/details/bynamea" class="btn btn-secondary btn-sm btn-block" role="button" aria-pressed="true">По номеру: А-Я</a>
-                  <a href="/details/bynamez" class="btn btn-secondary btn-sm btn-block" role="button" aria-pressed="true">По номеру: Я-А</a>
-                  <a href="/details/bydatenew" class="btn btn-secondary btn-sm btn-block" role="button" aria-pressed="true">По дате: сначала новые</a>
-                  <a href="/details/bydateold" class="btn btn-secondary btn-sm btn-block active" role="button" aria-pressed="true">По дате: сначала старые</a>
-                </div>
-            </div>
+  <div class="row" style="padding-top:10px;">
+  <div class="col">
+    <div class="row">
+{% if result_list %}
+<table class="table table-striped table-hover table-sm">
+<thead>
+<tr>
+<th>Название</th>
+<th>Тип метала</th>
+<th>Класс покрытия</th>
+<th>Изменен</th>
+</tr>
+</thead>
+<tbody>
+{% for q in result_list %}
+<tr>
+<td><a href="{{ q.get_absolute_url }}">{{ q.nom_num }}</a></td>
+<td>{{ q.metaltype }}</td>
+<td>{{ q.сoatingclass }}</td>
+<td>{{ q.edit_date }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
 
-        </div>
-      </div>
+{% else %}
+<p>No polls are available.</p>
+{% endif %}
+
+    </div>
+    <div class="row justify-content-center">
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+        {% if result_list.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1" aria-label="First"><span aria-hidden="true">Первая</span></a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ result_list.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">Предыдущая</span></a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link" href="#" aria-label="First"><span aria-hidden="true">Первая</span></a></li>
+            <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">Предыдущая</span></a></li>
+        {% endif %}
+    {% for i in result_list.paginator.page_range %}
+      {% if result_list.number == i %}
+        <li class="page-item disabled"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+        {% if result_list.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ result_list.next_page_number }}" aria-label="Next"><span aria-hidden="true">Следующая</span></a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ result_list.paginator.num_pages }}" aria-label="Previous"><span aria-hidden="true">Последняя</span></a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link" href="" aria-label="Next"><span aria-hidden="true">Следующая</span></a></li>
+            <li class="page-item disabled"><a class="page-link" href="" aria-label="Previous"><span aria-hidden="true">Последняя</span></a></li>
+        {% endif %}
+  </ul>
+</nav>
+    </div>
+  </div>
+  <div class="col-2">
+  <div class="row" style="padding-left: 4%">
+    <span class="w-100" style="padding-top:5px;">Название:</span>
+    <div class="btn-group" role="group" aria-label="filter" style="padding-left:5px">
+      <a href="/details/bynamea" class="btn btn-secondary btn-sm" role="button" aria-pressed="true">А-Я</a>
+      <a href="/details/bynamez" class="btn btn-secondary btn-sm" role="button" aria-pressed="true">Я-А</a>
+    </div>
+
+    <span class="w-100" style="padding-top:5px;">Тип металла:</span>
+    <div class="btn-group" role="group" aria-label="filter" style="padding-left:5px">
+      <a href="/details/bymetaltypea" class="btn btn-secondary btn-sm" role="button" aria-pressed="true">А-Я</a>
+      <a href="/details/bymetaltypez" class="btn btn-secondary btn-sm" role="button" aria-pressed="true">Я-А</a>
+    </div>
+
+    <span class="w-100" style="padding-top:5px;">Класс покрытия:</span>
+    <div class="btn-group" role="group" aria-label="filter" style="padding-left:5px">
+      <a href="/details/byсoatingclassa" class="btn btn-secondary btn-sm" role="button" aria-pressed="true">А-Я</a>
+      <a href="/details/byсoatingclassz" class="btn btn-secondary btn-sm" role="button" aria-pressed="true">Я-А</a>
+    </div>
+
+
+    <span class="w-100" style="padding-top:5px;">Изменен:</span>
+    <div class="btn-group" role="group" aria-label="filter" style="padding-left:5px">
+      <a href="/details/bydatenew" class="btn btn-secondary btn-sm" role="button" aria-pressed="true">Новые</a>
+      <a href="/details/bydateold" class="btn btn-secondary btn-sm active" role="button" aria-pressed="true">Старые</a>
+    </div>
+
+  </div>
+  </div>
+  </div>
+
 {% endblock %}

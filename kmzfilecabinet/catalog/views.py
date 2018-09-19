@@ -191,39 +191,123 @@ def details(request):
     Главная страница. Выборки: количество узлов, деталей. Лог админки.
     """
     title = "Детали"
+
+    result_list = Detail.objects.all()
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
     logger.info('"%s" page visited. User: %s' % (title, request.user))
-    return TemplateResponse(request, 'details.html', {'output': Detail.objects.order_by('-edit_date'), 'title':title})
+    return render(request, 'details.html', {'result_list':result_list, 'title':title})
 
 def detailsnamea(request):
     """
     Детали. По имени: А-Я
     """
     title = "Детали. По имени: А-Я"
+
+    result_list = Detail.objects.order_by('nom_num')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
     logger.info('"%s" page visited. User: %s' % (title, request.user))
-    req = Detail.objects.order_by('nom_num')
-    return TemplateResponse(request, 'detailsnamea.html', {'output': req, 'title':title})
+    return render(request, 'detailsnamea.html', {'result_list':result_list, 'title':title})
 
 def detailsnamez(request):
     """
     Детали. По имени: Я-А
     """
     title = "Детали. По имени: Я-А"
+
+    result_list = Detail.objects.order_by('-nom_num')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
     logger.info('"%s" page visited. User: %s' % (title, request.user))
-    req = Detail.objects.order_by('-nom_num')
-    return TemplateResponse(request, 'detailsnamez.html', {'output': req, 'title':title})
+    return render(request, 'detailsnamez.html', {'result_list':result_list, 'title':title})
+
+def metaltypea(request):
+    """
+    Детали. По типу металла: А-Я
+    """
+    title = "Детали. По типу металла: А-Я"
+
+    result_list = Detail.objects.order_by('metaltype')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    return render(request, 'detailsmetaltypea.html', {'result_list':result_list, 'title':title})
+
+def metaltypez(request):
+    """
+    Детали. По типу металла: Я-А
+    """
+    title = "Детали. По типу металла: Я-А"
+
+    result_list = Detail.objects.order_by('-metaltype')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    return render(request, 'detailsmetaltypez.html', {'result_list':result_list, 'title':title})
+
+def сoatingclassa(request):
+    """
+    Детали. По типу металла: А-Я
+    """
+    title = "Детали. По типу металла: А-Я"
+
+    result_list = Detail.objects.order_by('сoatingclass')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    return render(request, 'detailsсoatingclassa.html', {'result_list':result_list, 'title':title})
+
+def сoatingclassz(request):
+    """
+    Детали. По типу металла: Я-А
+    """
+    title = "Детали. По типу металла: Я-А"
+
+    result_list = Detail.objects.order_by('-сoatingclass')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    return render(request, 'detailsсoatingclassz.html', {'result_list':result_list, 'title':title})
 
 def detailsdatenew(request):
     """
     Детали. По дате: сначала новые. Выборки: узлы по дате
     """
     title = "Детали. Сортировка по дате: сначала новые."
-    logger.info('"%s" page visited. User: %s' % (title, request.user))
-    return TemplateResponse(request, 'detailsdatenew.html', {'output': Detail.objects.order_by('edit_date'), 'title':title})
 
+    result_list = Detail.objects.order_by('edit_date')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
+    logger.info('"%s" page visited. User: %s' % (title, request.user))
+    return render(request, 'detailsdatenew.html', {'result_list':result_list, 'title':title})
+    
 def detailsdateold(request):
     """
     Детали. По дате: сначала старые. Выборки: узлы по дате
     """
     title = "Детали. Сортировка по дате: сначала старые."
+
+    result_list = Detail.objects.order_by('-edit_date')
+    paginator = Paginator(result_list, per_page) 
+
+    page = request.GET.get('page')
+    result_list = paginator.get_page(page)
     logger.info('"%s" page visited. User: %s' % (title, request.user))
-    return TemplateResponse(request, 'detailsdateold.html', {'output': Detail.objects.order_by('-edit_date'), 'title':title})
+    return render(request, 'detailsdateold.html', {'result_list':result_list, 'title':title})
