@@ -6,7 +6,7 @@ app_name = 'catalog'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('units', views.units, name='units'),
+    path('units/', views.units, name='units'),
     path('units/byabbra', views.unitsabbra, name='units'),
     path('units/byabbrz', views.unitsabbrz, name='units'),
     path('units/bynamea', views.unitsnamea, name='units'),
@@ -16,14 +16,14 @@ urlpatterns = [
     path('units/byprenamea', views.unitsprenamea, name='units'),
     path('units/byprenamez', views.unitsprenamez, name='units'),
 
-    path('details', views.details, name='details'),
+
+    path('details/', views.details, name='details'),
     path('details/bynamea', views.detailsnamea, name='details'),
     path('details/bynamez', views.detailsnamez, name='details'),
     path('details/bymetaltypea', views.metaltypea, name='details'),
     path('details/bymetaltypez', views.metaltypez, name='details'),
     path('details/byсoatingclassa', views.сoatingclassa, name='details'),
     path('details/byсoatingclassz', views.сoatingclassz, name='details'),
-
     path('details/bydatenew', views.detailsdatenew, name='details'),
     path('details/bydateold', views.detailsdateold, name='details'),
 
