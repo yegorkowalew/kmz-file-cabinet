@@ -556,11 +556,10 @@ def detailsdateold(request):
 from django.views.generic.base import TemplateView
 
 class UnitView(TemplateView):
-
     template_name = "unit.html"
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        un = Unit.objects.get(pk=context['unitpk'])
-        context['unit'] = un
+        context['unit'] = Unit.objects.get(pk=context['unitpk'])
+        context['title'] = context['unit'].name
+        logger.info('"%s" page visited. User: %s' % (context['title'], self.request.user))
         return context

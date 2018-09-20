@@ -1,5 +1,5 @@
 from django.db import models
-
+from PIL import Image
 import re
 
 def clear_string(str):
@@ -7,6 +7,178 @@ def clear_string(str):
     for char in '?.!/;:,':
         str = str.replace(char,'') 
     return re.sub(r'\s+', ' ', str.strip().lower().capitalize())
+
+class Unit(models.Model):
+    # Инвентарный номер на титульной странице, дата? "Экз №" - оригинален?
+    # "действителен на"
+    papnum = models.PositiveIntegerField(
+                                        verbose_name="Номер папки",
+                                        null = True,
+                                        blank = True,
+                                        unique=True,
+                                        help_text="Оригинальный номер папки"
+                                        )
+    abbrname = models.ForeignKey(
+                            'AbbrName',
+                            verbose_name="Аббревиатура",
+                            max_length=30,
+                            on_delete=models.CASCADE,
+                            blank = True,
+                            null=True,
+                            help_text='Например: ТСЦ',
+                            )
+    prename = models.ForeignKey(
+                            'PreName',
+                            verbose_name="Наименование",
+                            max_length=30,
+                            on_delete=models.CASCADE,
+                            help_text='Например: "Стенка торцевая", "Звездочка приводная"',
+                            )
+    name = models.CharField(
+                            verbose_name="Обозначение", 
+                            unique = True,
+                            max_length=30,
+                            help_text="Используйте формат: <em>XXX.XXX.XXX.XXX</em>."
+                            )
+    
+    edit_date = models.DateField(
+                            verbose_name="Последнее изменение", 
+                            auto_now=True,
+                            )
+    titul_file = models.FileField(
+                            verbose_name="Фото титульной страницы", 
+                            blank = True, 
+                            )
+    comment = models.TextField(
+                            verbose_name="Комментарий", 
+                            blank = True, 
+                            )
+    members = models.ManyToManyField(
+        'self',
+        blank = True,
+        through='Membership',
+        symmetrical=False,
+        related_name='related_to'
+        )
+    detail = models.ManyToManyField(
+        'Detail',
+        blank = True,
+        through='Memberdetail',
+        symmetrical=False,
+        related_name='related_to'
+        )
+    standartdetail = models.ManyToManyField(
+        'StandartDetail',
+        blank = True,
+        through='Memberstandartdetail', #--
+        symmetrical=False,
+        related_name='related_to'
+        )
+    def __unicode__(self):
+        return self.name % self.id
+    def __str__(self):
+            return '%s %s %s' % (self.abbrname, self.name, self.prename.name)
+    def get_absolute_url(self):
+        return "/units/%i/" % self.id
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "сборочная единица"
+        verbose_name_plural = "сборочные единицы"
+
+class Detail(models.Model):
+    nom_num = models.CharField(max_length=50,
+                            unique = True,
+                            verbose_name="Обозначение", 
+                            )
+    file_pdf = models.FileField(
+                            verbose_name="pdf файл", 
+                            blank = True, 
+                            )
+    file_jpg = models.FileField(
+                            verbose_name="jpg файл", 
+                            blank = True, 
+                            )
+    file_cdw = models.FileField(
+                            verbose_name="cdw файл", 
+                            blank = True, 
+                            )
+    part_weight = models.FloatField(verbose_name="Теоретический вес детали", 
+                                                )
+    metaltype = models.ForeignKey(
+                            'Metaltype',
+                            verbose_name="Тип металла", 
+                            max_length=30,
+                            help_text="Обязательное поле",
+                            on_delete=models.CASCADE,
+                            )
+    сoatingclass = models.ForeignKey(
+                            'Сoatingclass',
+                            verbose_name="Класс покрытия", 
+                            max_length=30,
+                            help_text="Обязательное поле",
+                            on_delete=models.CASCADE,
+                            )
+    edit_date = models.DateField(
+                            verbose_name="Последнее изменение", 
+                            auto_now=True,
+                            )
+    shop = models.ManyToManyField(
+        'Shop',
+        through='MemberShop',
+        symmetrical=False,
+        related_name='related_to_shop'
+        )
+    detail_date = models.DateField(
+                            verbose_name="Дата редактирования детали", 
+                            # auto_now=True,
+                            )
+    class Meta:
+        ordering = ["nom_num"]
+        verbose_name = "деталь"
+        verbose_name_plural = "детали"
+    def __str__(self):
+            return self.nom_num
+    def get_absolute_url(self):
+        return "/details/%i/" % self.id
+
+class StandartDetail(models.Model):
+    nom_num = models.CharField(max_length=50,
+                            unique = True,
+                            verbose_name="Обозначение", 
+                            )
+
+    class Meta:
+        verbose_name = "стандартное изделие"
+        verbose_name_plural = "стандартные изделия"
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("_detail", kwargs={"pk": self.pk})
+
+class UnitContentPhoto(models.Model):
+    image = models.ImageField(
+                            upload_to='photos',
+                            # related_name='изображение',
+                            )
+    unit = models.ForeignKey(
+                            Unit, 
+                            related_name='изображение', 
+                            on_delete=models.CASCADE,
+                            )
+    class Meta:
+        verbose_name = "скан спецификации"
+        verbose_name_plural = "сканы спецификации"
+    # def save(self):
+    #     super(UnitContentPhoto, self).save()
+    #     img = Image.open(self.image)
+    #     size = (600,600)
+    #     img.resize(size, Image.ANTIALIAS)
+    #     print(self.image.path)
+    #     img.save(self.image.path)
+
+
 
 class AbbrName(models.Model):
     name = models.CharField("Аббревиатура узла", 
@@ -20,9 +192,9 @@ class AbbrName(models.Model):
         ordering = ["name"]
         verbose_name = "аббревиатура"
         verbose_name_plural = "аббревиатуры"
-    def save(self):
-        self.name = clear_string(self.name)
-        super(AbbrName, self).save()
+    # def save(self):
+    #     self.name = clear_string(self.name)
+    #     super(AbbrName, self).save()
 
 class PreName(models.Model):
     name = models.CharField("Название", 
@@ -40,71 +212,6 @@ class PreName(models.Model):
         self.name = clear_string(self.name)
         super(PreName, self).save()
 
-class Unit(models.Model):
-    # Инвентарный номер на титульной странице, дата? "Экз №" - оригинален?
-    # "действителен на"
-    # ТСЦ - аббревиатура изделия
-    abbrname = models.ForeignKey(
-                            'AbbrName',
-                            verbose_name="Аббревиатура узла",
-                            max_length=30,
-                            help_text="Не обязательное поле",
-                            on_delete=models.CASCADE,
-                            blank = True,
-                            null=True,
-                            )
-    prename = models.ForeignKey(
-                            'PreName',
-                            verbose_name="Тип узла",
-                            max_length=30,
-                            help_text="Обязательное поле",
-                            on_delete=models.CASCADE,
-                            )
-    name = models.CharField(
-                            verbose_name="Название узла", 
-                            unique = True,
-                            max_length=30,
-                            help_text="Используйте формат: <em>XXX.XXX.XXX.XXX</em>."
-                            )
-    edit_date = models.DateField(
-                            verbose_name="Последнее изменение", 
-                            auto_now=True,
-                            )
-    titul_file = models.FileField(
-                            verbose_name="Фото титульной страницы", 
-                            blank = True, 
-                            )
-    comment = models.TextField(
-                            verbose_name="Комментарий", 
-                            blank = True, 
-                            )
-    members = models.ManyToManyField(
-        'self',
-        through='Membership',
-        symmetrical=False,
-        related_name='related_to'
-        )
-    detail = models.ManyToManyField(
-        'Detail',
-        through='Memberdetail',
-        symmetrical=False,
-        related_name='related_to'
-        )
-
-    def __unicode__(self):
-        return self.name % self.id
-
-    def __str__(self):
-            return '%s -> %s' % (self.name, self.prename.name)
-    
-    def get_absolute_url(self):
-        return "/units/%i/" % self.id
-
-    class Meta:
-        ordering = ["name"]
-        verbose_name = "узел"
-        verbose_name_plural = "Узлы"
-
 class Membership(models.Model):
     from_u = models.ForeignKey(Unit, 
                                 related_name='from_unit', 
@@ -114,15 +221,14 @@ class Membership(models.Model):
     to_u = models.ForeignKey(Unit, 
                                 related_name='to_unit', 
                                 on_delete=models.CASCADE,
-                                verbose_name="Вложенный узел", 
+                                verbose_name="Сборочная единица", 
                                 )
-    
     amount = models.PositiveIntegerField(verbose_name="Количество", 
                                         )
     class Meta:
         unique_together = ('from_u', 'to_u')
-        verbose_name = "вложенный узел"
-        verbose_name_plural = "вложенные узлы"
+        verbose_name = "сборочная единица"
+        verbose_name_plural = "сборочные единицы"
     def __str__(self):
             return '%s -> %s (%s)' % (self.from_u.name, self.from_u.name, str(self.amount))
 
@@ -194,88 +300,47 @@ class MemberShop(models.Model):
     amount = models.PositiveIntegerField(verbose_name="очередь",)
     class Meta:
         unique_together = ('from_u', 'to_u')
-        verbose_name = "вложенный цех"
-        verbose_name_plural = "вложенные цехи"
+        verbose_name = "цех"
+        verbose_name_plural = "цехи"
     def __str__(self):
             return '%s -> %s (%s)' % (self.from_u.nom_num, self.to_u.text_name, str(self.amount))
 
-class Detail(models.Model):
-    nom_num = models.CharField(max_length=50,
-                            unique = True,
-                            verbose_name="Номенкулатурный номер", 
-                            )
-    file_pdf = models.FileField(
-                            verbose_name="pdf файл", 
-                            blank = True, 
-                            )
-    file_jpg = models.FileField(
-                            verbose_name="jpg файл", 
-                            blank = True, 
-                            )
-    file_cdw = models.FileField(
-                            verbose_name="cdw файл", 
-                            blank = True, 
-                            )
-    part_weight = models.FloatField(verbose_name="Теоретический вес детали", 
-                                                )
-    metaltype = models.ForeignKey(
-                            'Metaltype',
-                            verbose_name="Тип металла", 
-                            max_length=30,
-                            help_text="Обязательное поле",
-                            on_delete=models.CASCADE,
-                            )
-    сoatingclass = models.ForeignKey(
-                            'Сoatingclass',
-                            verbose_name="Класс покрытия", 
-                            max_length=30,
-                            help_text="Обязательное поле",
-                            on_delete=models.CASCADE,
-                            )
-    edit_date = models.DateField(
-                            verbose_name="Последнее изменение", 
-                            auto_now=True,
-                            )
-    # росцеховка
-    # shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
-    shop = models.ManyToManyField(
-        'Shop',
-        through='MemberShop',
-        symmetrical=False,
-        related_name='related_to_shop'
-        )
-
-    detail_date = models.DateField(
-                            verbose_name="Дата редактирования детали", 
-                            # auto_now=True,
-                            )
-
-    class Meta:
-        ordering = ["nom_num"]
-        verbose_name = "деталь"
-        verbose_name_plural = "детали"
-    def __str__(self):
-            return self.nom_num
-    def get_absolute_url(self):
-        return "/details/%i/" % self.id
-
 class Memberdetail(models.Model):
-    from_u = models.ForeignKey(Unit, 
+    from_u = models.ForeignKey('Unit', 
                                 related_name='from_unit_to_detail', 
                                 on_delete=models.CASCADE,
                                 verbose_name="Родитель", 
                                 )
-    to_u = models.ForeignKey(Detail, 
+    to_u = models.ForeignKey('Detail', 
                                 related_name='to_detail', 
                                 on_delete=models.CASCADE,
-                                verbose_name="Вложенная деталь", 
+                                verbose_name="деталь", 
                                 )
-    
     amount = models.PositiveIntegerField(verbose_name="Количество", 
                                         )
     class Meta:
         unique_together = ('from_u', 'to_u')
-        verbose_name = "вложенная деталь"
-        verbose_name_plural = "вложенные детали"
+        verbose_name = "деталь"
+        verbose_name_plural = "детали"
+    def __str__(self):
+            return '%s -> %s (%s)' % (self.from_u.name, self.to_u.nom_num, str(self.amount))
+
+class Memberstandartdetail(models.Model):
+    from_u = models.ForeignKey('Unit', 
+                                related_name='from_unit_to_standart_detail', 
+                                on_delete=models.CASCADE,
+                                verbose_name="Родитель", 
+                                )
+    to_u = models.ForeignKey('StandartDetail', 
+                                related_name='to_standart_detail', 
+                                on_delete=models.CASCADE,
+                                verbose_name="Стандартное изделие", 
+                                )
+    amount = models.PositiveIntegerField(verbose_name="Количество", 
+                                        )
+    class Meta:
+        unique_together = ('from_u', 'to_u')
+        verbose_name = "стандартное изделие"
+        verbose_name_plural = "стандартные изделия"
     def __str__(self):
             return '%s -> %s (%s)' % (self.from_u.name, self.to_u.nom_num, str(self.amount))

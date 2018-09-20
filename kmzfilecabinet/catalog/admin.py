@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import models
 
-from .models import Unit, PreName, Membership, Metaltype, Сoatingclass, Shop, Operation, Detail, MemberShop, AbbrName
+from .models import Unit, PreName, Membership, Metaltype, Сoatingclass, Shop, Operation, Detail, MemberShop, AbbrName, UnitContentPhoto
 
 class MemberShopInlineAdmin(admin.TabularInline):
     model = Detail.shop.through
@@ -15,12 +15,19 @@ class DetailInlineAdmin(admin.TabularInline):
     model = Unit.detail.through
     fk_name = 'from_u'
 
+class StandartDetailInlineAdmin(admin.TabularInline):
+    model = Unit.standartdetail.through
+    fk_name = 'from_u'
+
+class UnitContentPhotoInlineAdmin(admin.TabularInline):
+    model = UnitContentPhoto
+
 class UnitAdmin(admin.ModelAdmin):
-    fields = (('abbrname', 'prename', 'name'), ('titul_file'), 'comment')
+    fields = (('papnum', 'abbrname'), ('prename', 'name'), ('titul_file'), 'comment')
     list_display = ('name', 'prename', 'edit_date')
     search_fields = ['name']
-    inlines = (TermInlineAdmin, DetailInlineAdmin,)
-    # inlines = ()
+    inlines = (TermInlineAdmin, DetailInlineAdmin, StandartDetailInlineAdmin, UnitContentPhotoInlineAdmin)
+
 
 class DetailAdmin(admin.ModelAdmin):
     fields = ('nom_num', ('file_pdf', 'file_jpg', 'file_cdw'), ('part_weight'), ('metaltype', 'сoatingclass'), ('detail_date'),)
