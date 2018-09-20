@@ -9,6 +9,7 @@
 <h4>
     {% if unit.papnum %}<span class="badge badge-pill badge-success">{{ unit.papnum }}</span>{% endif %}
     {{ unit.abbrname }} {{ unit.prename }} {{ unit.name }}</h4>
+
 <table class="table table-striped table-hover table-sm">
 <thead>
 <tr>
@@ -67,7 +68,29 @@
         <span>Комментарий:</span>
         {{ unit.comment }}</p>
     </div>
+    <div class="row">
+      <div class="card">
+        <img class="card-img-top" src="https://via.placeholder.com/200x200" alt="Card image cap">
+        <div class="card-body">
+          <p class="card-text">Спецификация 1</p>
+        </div>
+      </div>
+      <div class="card">
+        <img class="card-img-top" src="https://via.placeholder.com/200x200" alt="Card image cap">
+        <div class="card-body">
+          <p class="card-text">Спецификация 2</p>
+        </div>
+      </div>
+      <div class="card">
+        <img class="card-img-top" src="https://via.placeholder.com/200x200" alt="Card image cap">
+        <div class="card-body">
+          <p class="card-text">Спецификация 3</p>
+        </div>
+      </div>
+    </div>
   </div>
+
+  
   <div class="col-2">
   <div class="row" style="padding-left: 4%">
       <span class="w-100" style="padding-top:5px;">Аббревиатура:</span>
