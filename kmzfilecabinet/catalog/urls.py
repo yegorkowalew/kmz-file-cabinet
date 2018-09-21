@@ -4,6 +4,9 @@ from . import views
 # from django.views.generic import TemplateView
 from catalog.views import UnitView
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 app_name = 'catalog'
 
 urlpatterns = [
@@ -39,4 +42,4 @@ urlpatterns = [
     path('catalog/bynamez', views.catalognamez, name='catalog'),
     path('catalog/bydatenew', views.catalogdatenew, name='catalog'),
     path('catalog/bydateold', views.catalogdateold, name='catalog'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

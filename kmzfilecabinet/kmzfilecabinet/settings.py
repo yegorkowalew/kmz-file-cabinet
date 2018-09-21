@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'imagekit',
     'catalog.apps.CatalogConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -124,7 +125,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     'C:/work/kmz-file-cabinet/kmzfilecabinet/static/',
 ]
-# MEDIA_ROOT = "".join(os.path.join(os.path.dirname(file), 'media').replace('\','/'))
+
+# MEDIA_ROOT = "".join(os.path.join(os.path.dirname(file), 'media').replace('\','/')
+
+MEDIA_ROOT = 'C:/work/kmz-file-cabinet/kmzfilecabinet/media/'
+MEDIA_URL = '/media/'
 
 LOGGING = {
     'version': 1,

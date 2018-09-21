@@ -23,7 +23,7 @@ class UnitContentPhotoInlineAdmin(admin.TabularInline):
     model = UnitContentPhoto
 
 class UnitAdmin(admin.ModelAdmin):
-    fields = (('papnum', 'abbrname'), ('prename', 'name'), ('titul_file'), 'comment')
+    fields = (('papnum', 'abbrname'), ('prename', 'name'), ('titul_image'), 'comment')
     list_display = ('name', 'prename', 'edit_date')
     search_fields = ['name']
     inlines = (TermInlineAdmin, DetailInlineAdmin, StandartDetailInlineAdmin, UnitContentPhotoInlineAdmin)

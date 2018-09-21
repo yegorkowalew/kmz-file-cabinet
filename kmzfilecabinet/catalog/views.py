@@ -5,7 +5,7 @@ from django.db.models.functions import Concat
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
 
-from .models import Unit, Detail
+from .models import Unit, Detail, UnitContentPhoto
 from django.contrib.admin.models import LogEntry
 import logging
 
@@ -561,5 +561,7 @@ class UnitView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['unit'] = Unit.objects.get(pk=context['unitpk'])
         context['title'] = context['unit'].name
+        context['images'] = UnitContentPhoto.objects.filter(unit__pk=context['unitpk'])
+        # print(context['images'])
         logger.info('"%s" page visited. User: %s' % (context['title'], self.request.user))
         return context

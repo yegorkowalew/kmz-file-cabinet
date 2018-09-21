@@ -1,5 +1,7 @@
 from django.db import models
 from PIL import Image
+from imagekit.models import ImageSpecField
+from imagekit.processors import SmartResize, ResizeToFit, Adjust
 import re
 
 def clear_string(str):
@@ -40,12 +42,12 @@ class Unit(models.Model):
                             max_length=30,
                             help_text="Используйте формат: <em>XXX.XXX.XXX.XXX</em>."
                             )
-    
     edit_date = models.DateField(
                             verbose_name="Последнее изменение", 
                             auto_now=True,
                             )
-    titul_file = models.FileField(
+    titul_image = models.ImageField(
+                            upload_to='photos',
                             verbose_name="Фото титульной страницы", 
                             blank = True, 
                             )
@@ -74,6 +76,16 @@ class Unit(models.Model):
         symmetrical=False,
         related_name='related_to'
         )
+    crop200 = ImageSpecField([
+        Adjust(contrast=1.2, sharpness=1.1),
+        SmartResize(170, 170),
+    ],
+        source='titul_image',
+        options={
+            'quality': 90,
+            'progressive': True,
+        }
+    )
     def __unicode__(self):
         return self.name % self.id
     def __str__(self):
@@ -160,23 +172,26 @@ class StandartDetail(models.Model):
 class UnitContentPhoto(models.Model):
     image = models.ImageField(
                             upload_to='photos',
-                            # related_name='изображение',
                             )
     unit = models.ForeignKey(
                             Unit, 
-                            related_name='изображение', 
+                            related_name='unitimage', 
                             on_delete=models.CASCADE,
                             )
+    crop200 = ImageSpecField([
+        Adjust(contrast=1.2, sharpness=1.1),
+        SmartResize(200, 200),
+    ],
+        source='image',
+        options={
+            'quality': 90,
+            'progressive': True,
+        }
+    )
     class Meta:
         verbose_name = "скан спецификации"
         verbose_name_plural = "сканы спецификации"
-    # def save(self):
-    #     super(UnitContentPhoto, self).save()
-    #     img = Image.open(self.image)
-    #     size = (600,600)
-    #     img.resize(size, Image.ANTIALIAS)
-    #     print(self.image.path)
-    #     img.save(self.image.path)
+
 
 
 
