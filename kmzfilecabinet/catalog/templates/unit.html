@@ -82,16 +82,16 @@
           <img class="card-img" src="{{unit.crop200.url}}" alt="Card image">
           <div class="card-img-overlay">
               <h6 class="card-title">
-                <a href="">Обложка</a>
+                <a href="{{unit.titul_image.url}}">Обложка</a>
                 </h6>
           </div>
         </div>
     {% endif %}
         {% for u in unit.unitimage.all %}
         <div class="card bg-dark text-white" style="margin-top:10px">
-            <img class="card-img" src="{{u.crop200.url}}" alt="Card image">
+            <img class="card-img" src="{{u.crop200.url}}" alt="{{u.name}}">
             <div class="card-img-overlay">
-                <h6 class="card-title"><a href="">Спецификация</a></h6>
+                <h6 class="card-title"><a href="{{u.image.url}}">Обложка</a></h6>
             </div>
           </div>
         {% endfor %}
