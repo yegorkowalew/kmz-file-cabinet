@@ -100,17 +100,11 @@ body {
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
 
-* {
-  border-radius: 0 !important;
+.navbar-nav {
+  display: inline;
 }
 
-.card-header {
-  background-color: rgba(232, 77, 34, 1);
-  color: #fff;
-}
-.card-deck {
-  padding-top: 20px;
-}
-.card-sht {
-  width: 10rem;
+.navbar-nav li {
+  float:left; 
+  padding-right: 10px;
 }
