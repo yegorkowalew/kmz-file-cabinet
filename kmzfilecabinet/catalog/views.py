@@ -12,7 +12,13 @@ import logging
 from itertools import chain
 from operator import attrgetter
 
+from django.views.generic.base import TemplateView
+
 from django.core.paginator import Paginator
+
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
 
 logger = logging.getLogger('catalog')
 
@@ -43,6 +49,7 @@ def index(request):
 Выборки каталога
 """
 
+@login_required(login_url='/accounts/login/')
 def catalog(request):
     """
     Страница каталога. Объединяю в одну выборку модели Details и Units
@@ -66,6 +73,7 @@ def catalog(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def catalognamea(request):
     """
     Страница каталога. Объединяю в одну выборку модели Details и Units. Сортирую по имени
@@ -91,6 +99,7 @@ def catalognamea(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def catalognamez(request):
     """
     Страница каталога. Объединяю в одну выборку модели Details и Units. Сортирую по имени в обратном порядке
@@ -116,6 +125,7 @@ def catalognamez(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def catalogdatenew(request):
     """
     Страница каталога. Объединяю в одну выборку модели Details и Units. Сортирую по дате
@@ -141,6 +151,7 @@ def catalogdatenew(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def catalogdateold(request):
     """
     Страница каталога. Объединяю в одну выборку модели Details и Units. Сортирую по дате в обратном порядке
@@ -170,6 +181,7 @@ def catalogdateold(request):
 Выборки по узлам
 """
 
+@login_required(login_url='/accounts/login/')
 def units(request):
     """
     Главная страница. Выборки: количество узлов, деталей. Лог админки.
@@ -191,6 +203,7 @@ def units(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def unitsabbra(request):
     """
     Узлы. По аббревиатуре: А-Я
@@ -212,6 +225,7 @@ def unitsabbra(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def unitsabbrz(request):
     """
     Узлы. По аббревиатуре: Я-А
@@ -233,6 +247,7 @@ def unitsabbrz(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def unitsnamea(request):
     """
     Узлы. По имени: А-Я
@@ -254,6 +269,7 @@ def unitsnamea(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def unitsnamez(request):
     """
     Узлы. По имени: Я-А
@@ -275,6 +291,7 @@ def unitsnamez(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def unitsdatenew(request):
     """
     Узлы. По дате: сначала новые. Выборки: узлы по дате
@@ -296,6 +313,7 @@ def unitsdatenew(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def unitsdateold(request):
     """
     Узлы. По дате: сначала старые. Выборки: узлы по дате
@@ -317,6 +335,7 @@ def unitsdateold(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def unitsprenamea(request):
     """
     Узлы. По типу: А-Я
@@ -338,6 +357,7 @@ def unitsprenamea(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def unitsprenamez(request):
     """
     Узлы. По типу: Я-А
@@ -363,6 +383,7 @@ def unitsprenamez(request):
 Выборки по деталям
 """
 
+@login_required(login_url='/accounts/login/')
 def details(request):
     """
     Главная страница. Выборки: количество узлов, деталей. Лог админки.
@@ -384,6 +405,7 @@ def details(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def detailsnamea(request):
     """
     Детали. По имени: А-Я
@@ -405,6 +427,7 @@ def detailsnamea(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def detailsnamez(request):
     """
     Детали. По имени: Я-А
@@ -426,6 +449,7 @@ def detailsnamez(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def metaltypea(request):
     """
     Детали. По типу металла: А-Я
@@ -447,6 +471,7 @@ def metaltypea(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def metaltypez(request):
     """
     Детали. По типу металла: Я-А
@@ -468,6 +493,7 @@ def metaltypez(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def сoatingclassa(request):
     """
     Детали. По типу металла: А-Я
@@ -489,6 +515,7 @@ def сoatingclassa(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def сoatingclassz(request):
     """
     Детали. По типу металла: Я-А
@@ -511,6 +538,7 @@ def сoatingclassz(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
+@login_required(login_url='/accounts/login/')
 def detailsdatenew(request):
     """
     Детали. По дате: сначала новые. Выборки: узлы по дате
@@ -532,6 +560,7 @@ def detailsdatenew(request):
                                             'all_count':len_unit+len_detail,
                                             })
     
+@login_required(login_url='/accounts/login/')
 def detailsdateold(request):
     """
     Детали. По дате: сначала старые. Выборки: узлы по дате
@@ -553,10 +582,11 @@ def detailsdateold(request):
                                             'all_count':len_unit+len_detail,
                                             })
 
-from django.views.generic.base import TemplateView
-
 class UnitView(TemplateView):
     template_name = "unit.html"
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['unit'] = Unit.objects.get(pk=context['unitpk'])
