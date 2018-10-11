@@ -61,7 +61,18 @@
   {% endfor %}
 {% endif %}
 
-
+{% if unit.standartdetail.all %}
+  {% for u in unit.from_unit_to_standart_detail.all %}
+<tr>
+  <th>Ст. Изд.</th>
+    <td></td>
+    <td>{{ u.to_u.standart_detail_creator }}</td>
+    <td><a href="{{ u.to_u.nom_num }}">{{ u.to_u.nom_num }}</a></td>
+    <td>{{ u.amount }}</td>
+    <td>{{ u.to_u.edit_date }}</td>
+</tr>
+  {% endfor %}
+{% endif %}
 </tbody>
 </table>
 

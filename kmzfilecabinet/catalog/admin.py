@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import models
 
-from .models import Unit, PreName, Membership, Metaltype, Сoatingclass, Shop, Operation, Detail, MemberShop, AbbrName, UnitContentPhoto
+from .models import Unit, PreName, Membership, Metaltype, Сoatingclass, Shop, Operation, Detail, MemberShop, AbbrName, UnitContentPhoto, StandartDetail, StandartDetailCreator
 
 class MemberShopInlineAdmin(admin.TabularInline):
     model = Detail.shop.through
@@ -39,6 +39,12 @@ class DetailAdmin(admin.ModelAdmin):
 class MembershipAdmin(admin.ModelAdmin):
     fields = ('amount', 'from_u', 'to_u')
 
+class StandartDetailAdmin(admin.ModelAdmin):
+    fields = ('nom_num', 'standart_detail_creator')
+
+# class StandartDetailCreatorAdmin(admin.ModelAdmin):
+    # fields = ('name')
+
 admin.site.register(Unit, UnitAdmin)
 # admin.site.register(Membership, MembershipAdmin)
 # admin.site.register(MemberShop)
@@ -48,4 +54,6 @@ admin.site.register(Сoatingclass)
 admin.site.register(Shop)
 admin.site.register(Operation)
 admin.site.register(AbbrName)
+admin.site.register(StandartDetail, StandartDetailAdmin)
+admin.site.register(StandartDetailCreator)
 admin.site.register(Detail, DetailAdmin)

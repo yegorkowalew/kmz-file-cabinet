@@ -72,7 +72,7 @@ class Unit(models.Model):
     standartdetail = models.ManyToManyField(
         'StandartDetail',
         blank = True,
-        through='Memberstandartdetail', #--
+        through='Memberstandartdetail',
         symmetrical=False,
         related_name='related_to'
         )
@@ -153,21 +153,50 @@ class Detail(models.Model):
     def get_absolute_url(self):
         return "/details/%i/" % self.id
 
+class StandartDetailCreator(models.Model):
+    name = models.CharField(max_length=50,
+                            unique = True,
+                            verbose_name="Название", 
+                            )
+    edit_date = models.DateField(
+                            verbose_name="Последнее изменение", 
+                            auto_now=True,
+                            )
+    class Meta:
+        verbose_name = ("Родитель стандартной детали")
+        verbose_name_plural = ("Родители стандартной детали")
+    def __str__(self):
+        return self.name
+
+    # def get_absolute_url(self):
+        # return reverse("standartdetailcreator_detail", kwargs={"pk": self.pk})
+
+
 class StandartDetail(models.Model):
     nom_num = models.CharField(max_length=50,
                             unique = True,
                             verbose_name="Обозначение", 
                             )
-
+    standart_detail_creator = models.ForeignKey(
+        "StandartDetailCreator", 
+        verbose_name=("Родитель стандартной детали"), 
+        on_delete=models.CASCADE,
+        blank = True)
+    edit_date = models.DateField(
+                            verbose_name="Последнее изменение", 
+                            auto_now=True,
+                            )
     class Meta:
         verbose_name = "стандартное изделие"
         verbose_name_plural = "стандартные изделия"
 
+    def __unicode__(self):
+        return self.standart_detail_creator.name % self.nom_num
     def __str__(self):
-        return self.name
+        return '%s %s' % (self.standart_detail_creator.name, self.nom_num)
 
-    def get_absolute_url(self):
-        return reverse("_detail", kwargs={"pk": self.pk})
+    # def get_absolute_url(self):
+    #     return reverse("_detail", kwargs={"pk": self.pk})
 
 class UnitContentPhoto(models.Model):
     image = models.ImageField(
@@ -191,9 +220,6 @@ class UnitContentPhoto(models.Model):
     class Meta:
         verbose_name = "скан спецификации"
         verbose_name_plural = "сканы спецификации"
-
-
-
 
 class AbbrName(models.Model):
     name = models.CharField("Аббревиатура узла", 
