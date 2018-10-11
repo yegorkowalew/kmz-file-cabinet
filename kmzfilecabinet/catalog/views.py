@@ -595,3 +595,17 @@ class UnitView(TemplateView):
         # print(context['images'])
         logger.info('"%s" page visited. User: %s' % (context['title'], self.request.user))
         return context
+
+class DetailView(TemplateView):
+    template_name = "detail.html"
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['detail'] = Detail.objects.get(pk=context['detailpk'])
+        context['title'] = context['detail'].nom_num
+        # context['images'] = UnitContentPhoto.objects.filter(unit__pk=context['unitpk'])
+        # print(context['images'])
+        logger.info('"%s" page visited. User: %s' % (context['title'], self.request.user))
+        return context

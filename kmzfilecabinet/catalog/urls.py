@@ -2,7 +2,7 @@ from django.urls import path
 
 from . import views
 # from django.views.generic import TemplateView
-from catalog.views import UnitView
+from catalog.views import UnitView, DetailView
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -23,6 +23,7 @@ urlpatterns = [
     path('units/byprenamea', views.unitsprenamea, name='units'),
     path('units/byprenamez', views.unitsprenamez, name='units'),
 
+    path('details/<int:detailpk>/', DetailView.as_view(), name='detail'),
     path('details/', views.details, name='details'),
     path('details/bynamea', views.detailsnamea, name='details'),
     path('details/bynamez', views.detailsnamez, name='details'),
