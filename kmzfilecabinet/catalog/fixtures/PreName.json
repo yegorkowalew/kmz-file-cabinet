@@ -1,0 +1,114 @@
+[
+    {
+        "model": "catalog.PreName",
+        "pk": 1,
+        "fields": {
+        "name": "Рама"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 2,
+        "fields": {
+        "name": "Стенка левая"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 3,
+        "fields": {
+        "name": "Стенка правая"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 4,
+        "fields": {
+        "name": "Звездочка приводная"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 5,
+        "fields": {
+        "name": "Стенка торцевая"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 6,
+        "fields": {
+        "name": "Опора цепи"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 7,
+        "fields": {
+        "name": "Стенка"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 8,
+        "fields": {
+        "name": "Станция приводная"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 9,
+        "fields": {
+        "name": "Станция натяжная"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 10,
+        "fields": {
+        "name": "Секция выгрузная"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 11,
+        "fields": {
+        "name": "Крышка со смотровым люком"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 12,
+        "fields": {
+        "name": "Крышка с фланцем"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 13,
+        "fields": {
+        "name": "Цепь"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 14,
+        "fields": {
+        "name": "Звено внутреннее"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 15,
+        "fields": {
+        "name": "Звено наружное"
+        }
+    },
+    {
+        "model": "catalog.PreName",
+        "pk": 16,
+        "fields": {
+        "name": "Роликоопора"
+        }
+    }
+  ]

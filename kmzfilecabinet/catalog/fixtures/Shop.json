@@ -1,0 +1,34 @@
+[
+    {
+        "model": "catalog.Shop",
+        "pk": 1,
+        "fields": {
+        "text_name": "Котельний цех",
+        "num_name": "101"
+        }
+    },
+    {
+        "model": "catalog.Shop",
+        "pk": 2,
+        "fields": {
+        "text_name": "Механічний цех",
+        "num_name": "102"
+        }
+    },
+    {
+        "model": "catalog.Shop",
+        "pk": 3,
+        "fields": {
+            "text_name": "Цех по випуску силосів",
+            "num_name": "104"
+        }
+    },
+    {
+        "model": "catalog.Shop",
+        "pk": 4,
+        "fields": {
+            "text_name": "Заготівельний цех",
+            "num_name": "107"
+        }
+    }
+  ]

@@ -1,0 +1,44 @@
+[
+    {
+        "model": "catalog.StubName",
+        "pk": 1,
+        "fields": {
+        "name": "Лист"
+        }
+    },
+    {
+        "model": "catalog.StubName",
+        "pk": 2,
+        "fields": {
+        "name": "Двутавр"
+        }
+    },
+    {
+        "model": "catalog.StubName",
+        "pk": 3,
+        "fields": {
+        "name": "Швеллер"
+        }
+    },
+    {
+        "model": "catalog.StubName",
+        "pk": 4,
+        "fields": {
+        "name": "Уголок"
+        }
+    },
+    {
+        "model": "catalog.StubName",
+        "pk": 5,
+        "fields": {
+        "name": "Круг"
+        }
+    },
+    {
+        "model": "catalog.StubName",
+        "pk": 6,
+        "fields": {
+        "name": "Труба"
+        }
+    }
+  ]

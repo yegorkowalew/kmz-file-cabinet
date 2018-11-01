@@ -20,21 +20,12 @@ class Unit(models.Model):
                                         unique=True,
                                         help_text="Оригинальный номер папки"
                                         )
-    abbrname = models.ForeignKey(
-                            'AbbrName',
-                            verbose_name="Аббревиатура",
-                            max_length=30,
-                            on_delete=models.CASCADE,
-                            blank = True,
-                            null=True,
-                            help_text='Например: ТСЦ',
-                            )
     prename = models.ForeignKey(
                             'PreName',
                             verbose_name="Наименование",
                             max_length=30,
                             on_delete=models.CASCADE,
-                            help_text='Например: "Стенка торцевая", "Звездочка приводная"',
+                            help_text='Например: "Роликоопора", "Опора цепи"',
                             )
     name = models.CharField(
                             verbose_name="Обозначение", 
@@ -89,7 +80,7 @@ class Unit(models.Model):
     def __unicode__(self):
         return self.name % self.id
     def __str__(self):
-            return '%s %s %s' % (self.abbrname, self.name, self.prename.name)
+            return '%s %s %s' % (self.name, self.prename.name)
     def get_absolute_url(self):
         return "/units/%i/" % self.id
     class Meta:
@@ -98,37 +89,125 @@ class Unit(models.Model):
         verbose_name_plural = "сборочные единицы"
 
 class Detail(models.Model):
-    nom_num = models.CharField(max_length=50,
+    nom_num = models.CharField(max_length=50, #1
+                            unique = True,
+                            verbose_name="Наименование", 
+                            )
+    designation = models.CharField(max_length=50, #2
                             unique = True,
                             verbose_name="Обозначение", 
+                            blank = True,
+                            null = True
                             )
-    file_pdf = models.FileField(
+    file_pdf = models.FileField( #3
                             verbose_name="pdf файл", 
                             blank = True, 
                             )
-    file_jpg = models.FileField(
+    file_jpg = models.FileField( #4
                             verbose_name="jpg файл", 
                             blank = True, 
                             )
-    file_cdw = models.FileField(
+    file_cdw = models.FileField( #5
                             verbose_name="cdw файл", 
                             blank = True, 
                             )
-    part_weight = models.FloatField(verbose_name="Теоретический вес детали", 
+    stub_name = models.ForeignKey( #6
+                            'StubName',
+                            verbose_name="Заготовка",
+                            max_length=30,
+                            on_delete=models.CASCADE,
+                            help_text='Например: "Уголок", "Двутавр"',
+                            blank = True,
+                            null = True,
+                            )
+    part_weight = models.FloatField( #7
+                            verbose_name="Теоретический вес детали", 
+                            blank = True,
+                            null = True,
                                                 )
-    metaltype = models.ForeignKey(
+    metaltype = models.ForeignKey( #8
                             'Metaltype',
-                            verbose_name="Тип металла", 
+                            verbose_name="Тип стали", 
                             max_length=30,
                             help_text="Обязательное поле",
                             on_delete=models.CASCADE,
+                            blank = True,
+                            null = True,
+                            )
+    test_width = models.PositiveIntegerField( #10
+                            verbose_name="Длинна",
+                            null = True,
+                            blank = True,
+                            unique=True,
+                            help_text="Длинна черновой детали"
+                            )
+    test_height = models.PositiveIntegerField( #11
+                            verbose_name="Ширина",
+                            null = True,
+                            blank = True,
+                            unique=True,
+                            help_text="Ширина черновой детали"
+                            )
+    diameter = models.PositiveIntegerField( #12
+                            verbose_name="Диаметр",
+                            null = True,
+                            blank = True,
+                            unique=True,
+                            help_text="Диаметр, если это труба или цилиндр"
+                            )
+    shelf_height = models.PositiveIntegerField( #13
+                            verbose_name="Высота полки",
+                            null = True,
+                            blank = True,
+                            unique=True,
+                            help_text="Высота полки, если это уголок"
+                            )
+    thickness = models.PositiveIntegerField( #9
+                            verbose_name="Толщина",
+                            null = True,
+                            blank = True,
+                            unique=True,
+                            help_text="Толщина детали"
+                            )
+
+    array_height = models.PositiveIntegerField( #14
+                            verbose_name="Длинна",
+                            null = True,
+                            blank = True,
+                            unique=True,
+                            help_text="Длинна заготовки для массива"
+                            )
+    array_width = models.PositiveIntegerField( #15
+                            verbose_name="Ширина",
+                            null = True,
+                            blank = True,
+                            unique=True,
+                            help_text="Ширина заготовки для массива"
+                            )
+    array_amount = models.PositiveIntegerField( #16
+                            verbose_name="Количество",
+                            null = True,
+                            blank = True,
+                            unique=True,
+                            help_text="Количество деталей из массива"
+                            )
+    color_coating = models.ForeignKey( #18
+                            'ColorCoating',
+                            verbose_name="Цвет покрытия", 
+                            max_length=30,
+                            help_text='Цвет покрытия, если деталь красят',
+                            on_delete=models.CASCADE,
+                            blank = True,
+                            null = True,
                             )
     сoatingclass = models.ForeignKey(
                             'Сoatingclass',
-                            verbose_name="Класс покрытия", 
+                            verbose_name="Тип цинка", 
                             max_length=30,
-                            help_text="Обязательное поле",
+                            help_text="Тип цинка, если деталь на цинковании",
                             on_delete=models.CASCADE,
+                            blank = True,
+                            null = True,
                             )
     edit_date = models.DateField(
                             verbose_name="Последнее изменение", 
@@ -170,7 +249,6 @@ class StandartDetailCreator(models.Model):
 
     # def get_absolute_url(self):
         # return reverse("standartdetailcreator_detail", kwargs={"pk": self.pk})
-
 
 class StandartDetail(models.Model):
     nom_num = models.CharField(max_length=50,
@@ -221,26 +299,10 @@ class UnitContentPhoto(models.Model):
         verbose_name = "скан спецификации"
         verbose_name_plural = "сканы спецификации"
 
-class AbbrName(models.Model):
-    name = models.CharField("Аббревиатура узла", 
-                            max_length=30,
-                            help_text="Аббревиатура узла",
-                            unique = True,
-                            )
-    def __str__(self):
-            return self.name
-    class Meta:
-        ordering = ["name"]
-        verbose_name = "аббревиатура"
-        verbose_name_plural = "аббревиатуры"
-    # def save(self):
-    #     self.name = clear_string(self.name)
-    #     super(AbbrName, self).save()
-
 class PreName(models.Model):
     name = models.CharField("Название", 
                             max_length=30,
-                            help_text="Название типа узла",
+                            help_text='Например: "Роликоопора", "Опора цепи"',
                             unique = True,
                             )
     def __str__(self):
@@ -249,6 +311,22 @@ class PreName(models.Model):
         ordering = ["name"]
         verbose_name = "тип узла"
         verbose_name_plural = "типы узлов"
+    def save(self):
+        self.name = clear_string(self.name)
+        super(PreName, self).save()
+
+class StubName(models.Model):
+    name = models.CharField("Название", 
+                            max_length=30,
+                            help_text='Например: "Уголок", "Двутавр"',
+                            unique = True,
+                            )
+    def __str__(self):
+            return self.name
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "тип заготовки"
+        verbose_name_plural = "типы заготовок"
     def save(self):
         self.name = clear_string(self.name)
         super(PreName, self).save()
@@ -285,15 +363,33 @@ class Metaltype(models.Model):
             return self.name
 
 class Сoatingclass(models.Model):
-    name = models.CharField(max_length=50,
+    name = models.CharField(max_length=10,
                             unique = True,
+                            verbose_name="Название",
+                            )
+    type = models.CharField(max_length=20,
+                            verbose_name="Холодный или горячий",
                             )
     class Meta:
-        ordering = ["name"]
-        verbose_name = "класс покрытия"
-        verbose_name_plural = "классы покрытия"
+        ordering = ["type"]
+        verbose_name = "тип цинкования"
+        verbose_name_plural = "типы цинкования"
     def __str__(self):
-            return self.name
+            return '%s: %s' % (self.type, self.name)
+
+class ColorCoating(models.Model):
+    color_name = models.CharField(max_length=50,
+                            unique = True,
+                            verbose_name="Цвет по каталогу RAL",
+                            )
+    color_type = models.CharField(max_length=20,
+                            verbose_name="Грунт или емаль",
+                            )
+    class Meta:
+        verbose_name = "цвет покрытия"
+        verbose_name_plural = "цвета покрытия"
+    def __str__(self):
+            return '%s: %s' % (self.color_type, self.color_name)
 
 class Shop(models.Model):
     text_name = models.CharField(max_length=50,

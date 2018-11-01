@@ -1,0 +1,26 @@
+[
+    {
+        "model": "catalog.ColorCoating",
+        "pk": 1,
+        "fields": {
+            "color_type": "Грунт",
+            "color_name": "Белый"
+        }
+    },
+    {
+        "model": "catalog.ColorCoating",
+        "pk": 2,
+        "fields": {
+            "color_type": "Емаль",
+            "color_name": "2030"
+        }
+    },
+    {
+        "model": "catalog.ColorCoating",
+        "pk": 3,
+        "fields": {
+            "color_type": "Емаль",
+            "color_name": "3030"
+        }
+    }
+  ]

@@ -1,0 +1,34 @@
+[
+    {
+        "model": "catalog.Сoatingclass",
+        "pk": 1,
+        "fields": {
+            "type": "Холодный",
+            "name": "Ц18"
+        }
+    },
+    {
+        "model": "catalog.Сoatingclass",
+        "pk": 2,
+        "fields": {
+            "type": "Холодный",
+            "name": "Ц20"
+        }
+    },
+    {
+        "model": "catalog.Сoatingclass",
+        "pk": 3,
+        "fields": {
+            "type": "Горячий",
+            "name": "Ц50"
+        }
+    },
+    {
+        "model": "catalog.Сoatingclass",
+        "pk": 4,
+        "fields": {
+            "type": "Горячий",
+            "name": "Ц70"
+        }
+    }
+  ]
