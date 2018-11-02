@@ -90,14 +90,10 @@ class Unit(models.Model):
 
 class Detail(models.Model):
     nom_num = models.CharField(max_length=50, #1
-                            unique = True,
-                            verbose_name="Наименование", 
+                            verbose_name="Наименование 'Крышка'", 
                             )
     designation = models.CharField(max_length=50, #2
-                            unique = True,
-                            verbose_name="Обозначение", 
-                            blank = True,
-                            null = True
+                            verbose_name="Обозначение 'ТСЦ-400.000.000'", 
                             )
     file_pdf = models.FileField( #3
                             verbose_name="pdf файл", 
@@ -200,7 +196,7 @@ class Detail(models.Model):
                             blank = True,
                             null = True,
                             )
-    сoatingclass = models.ForeignKey(
+    coatingclass = models.ForeignKey(
                             'Сoatingclass',
                             verbose_name="Тип цинка", 
                             max_length=30,
@@ -221,7 +217,7 @@ class Detail(models.Model):
         )
     detail_date = models.DateField(
                             verbose_name="Дата редактирования детали", 
-                            # auto_now=True,
+                            auto_now=True,
                             )
     class Meta:
         ordering = ["nom_num"]

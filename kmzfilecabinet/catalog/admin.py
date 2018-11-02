@@ -57,7 +57,7 @@ class DetailAdmin(admin.ModelAdmin):
         }),
         ('Цинкование', {
             'classes': ('collapse',),
-            'fields':  ('сoatingclass',),
+            'fields':  ('coatingclass',),
         }),
         ('Покраска', {
             'classes': ('collapse',),
