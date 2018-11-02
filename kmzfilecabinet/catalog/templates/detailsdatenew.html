@@ -31,33 +31,8 @@
 {% endif %}
 
     </div>
-    <div class="row justify-content-center">
-<nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center">
-        {% if result_list.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page=1" aria-label="First"><span aria-hidden="true">Первая</span></a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ result_list.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">Предыдущая</span></a></li>
-        {% else %}
-            <li class="page-item disabled"><a class="page-link" href="#" aria-label="First"><span aria-hidden="true">Первая</span></a></li>
-            <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">Предыдущая</span></a></li>
-        {% endif %}
-    {% for i in result_list.paginator.page_range %}
-      {% if result_list.number == i %}
-        <li class="page-item disabled"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-      {% else %}
-        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-      {% endif %}
-    {% endfor %}
-        {% if result_list.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ result_list.next_page_number }}" aria-label="Next"><span aria-hidden="true">Следующая</span></a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ result_list.paginator.num_pages }}" aria-label="Previous"><span aria-hidden="true">Последняя</span></a></li>
-        {% else %}
-            <li class="page-item disabled"><a class="page-link" href="" aria-label="Next"><span aria-hidden="true">Следующая</span></a></li>
-            <li class="page-item disabled"><a class="page-link" href="" aria-label="Previous"><span aria-hidden="true">Последняя</span></a></li>
-        {% endif %}
-  </ul>
-</nav>
-    </div>
+   <!-- paginator -->
+{% include "detailspaginations.html" %}
   </div>
   <div class="col-2">
   <div class="row" style="padding-left: 4%">

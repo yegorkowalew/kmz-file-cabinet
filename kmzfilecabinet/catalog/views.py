@@ -22,7 +22,7 @@ from django.utils.decorators import method_decorator
 
 logger = logging.getLogger('catalog')
 
-per_page = 5
+per_page = 23
 
 def index(request):
     """
