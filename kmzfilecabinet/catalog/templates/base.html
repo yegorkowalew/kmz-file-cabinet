@@ -8,8 +8,9 @@
 
     <title>{% block title %}{% endblock %}</title>
 
-    <link href="{% static "/css/bootstrap.min.css" %}" rel="stylesheet">
-    <link href="{% static "/css/dashboard.css" %}" rel="stylesheet">
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/dashboard.css" %}" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
   <style type="text/css">/* Chart.js */
@@ -18,7 +19,6 @@
   <body>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">KMZ File cabinet</a>
-      <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
       <ul class="navbar-nav px-3">
       {% if user.is_authenticated %}
           <li class="nav-item text-nowrap"><b class="nav-link">{{user.last_name }} {{user.first_name }}</b></li>

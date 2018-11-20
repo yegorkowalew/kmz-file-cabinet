@@ -2,63 +2,46 @@
 {% block title %}KMZ File cabinet - {{title}}{% endblock %}
 {% block content %}
 <div class="row">
-    <div class="col-md-6">
-            <div class="col-md-3" style="float: left; padding-top: 20px; min-width: 210px;">
-                    <div class="card mb-4 shadow-sm">
-                            <div class="card-header">
-                                    <h6 class="my-0 font-weight-normal">Узлы</h6>
-                                </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title">{{len_unit}}<small class="text-muted">шт.</small></h1>
-                            <div class="d-flex justify-content-between align-items-center">
-                                    <a class="btn btn-sm btn-block btn-secondary" href="/units" role="button">Перейти</a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3" style="float: left; padding-top: 20px; min-width: 210px;">
-                        <div class="card mb-4 shadow-sm">
-                                <div class="card-header">
-                                        <h6 class="my-0 font-weight-normal">Детали</h6>
-                                    </div>
-                            <div class="card-body">
-                                <h1 class="card-title pricing-card-title">{{len_detail}}<small class="text-muted">шт.</small></h1>
-                                <div class="d-flex justify-content-between align-items-center">
-                                        <a class="btn btn-sm btn-block btn-secondary" href="/details" role="button">Перейти</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-    </div>
-    <div class="col-md-6" style="padding-top: 20px; min-width: 200px; max-width: 400px;">
-            <div class="card mb-4 shadow-sm">
-                    <div class="card-header">
-                            <h6 class="my-0 font-weight-normal">История</h6>
-                        </div>
-                <div class="card-body">
-                        <ul class="list-unstyled">{% for q in admin_log %}
-                            <li>
-                                    {% if q.action_flag == 1 %}
-                                        <i class="fas fa-plus-square" style="color:Tomato"></i>
-                                    {% elif q.action_flag == 2 %}
-                                        <i class="fas fa-pen-square" style="color:Tomato"></i>
-                                    {% elif q.action_flag == 3 %}
-                                        <i class="fas fa-minus-square" style="color:Tomato"></i>
-                                    {% endif %}
-                                    {{q.action_time|date:"t.m.Y"}} {{q.user}} {{q.object_repr}}
-                            </li>
-                            {% endfor %}</ul>
+    <div class="col-3 first-col">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="my-0 font-weight-normal">Узлы</h6>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">{{len_unit}}<small class="text-muted">шт.</small></h1>
+                <div class="d-flex justify-content-between align-items-center">
+                    <a class="btn btn-sm btn-block btn-secondary" href="/units" role="button">Перейти</a>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="col-3 first-col">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="my-0 font-weight-normal">Детали</h6>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">{{len_detail}}<small class="text-muted">шт.</small></h1>
+                <div class="d-flex justify-content-between align-items-center">
+                    <a class="btn btn-sm btn-block btn-secondary" href="/details" role="button">Перейти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col first-col">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="my-0 font-weight-normal">История</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">{% for q in admin_log %}
+                    <li>{% if q.action_flag == 1 %}<i class="fas fa-plus-square" style="color:Tomato"></i>
+                        {% elif q.action_flag == 2 %}<i class="fas fa-pen-square" style="color:Tomato"></i>
+                        {% elif q.action_flag == 3 %}<i class="fas fa-minus-square" style="color:Tomato"></i>
+                        {% endif %}{{q.action_time|date:"t.m.Y"}} {{q.user}} {{q.object_repr}}</li>
+                        {% endfor %}</ul>
+            </div>
+        </div>
+    </div>
 </div>
-    <!-- <div class="card-deck mb-3 text-center"> -->
-        
-
-
-    <!-- </div> -->
-
-
-
 {% endblock %}

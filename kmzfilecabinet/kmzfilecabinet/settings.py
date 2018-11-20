@@ -122,11 +122,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    'C:/work/kmz-file-cabinet/kmzfilecabinet/static/',
-]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS =[os.path.join(BASE_DIR, 'static')]
 
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+#     'C:/work/kmz-file-cabinet/kmzfilecabinet/static/',
+#     'C:/Users/i.kovalenko/Envs/kmzfilecabinet/Lib/site-packages/django/contrib/admin/static',
+# ]
+# 'C:/work/kmz-file-cabinet/kmzfilecabinet/static/'
 # MEDIA_ROOT = "".join(os.path.join(os.path.dirname(file), 'media').replace('\','/')
 
 MEDIA_ROOT = 'C:/work/kmz-file-cabinet/kmzfilecabinet/media/'
