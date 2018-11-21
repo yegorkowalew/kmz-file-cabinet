@@ -10,6 +10,7 @@ from django.conf.urls.static import static
 app_name = 'catalog'
 
 urlpatterns = [
+    # path('search/', views.search, name='search'),
     path('', views.index, name='index'),
     # path('units/$', UnitView.as_view(template_name="unit.html")),
     path('units/<int:unitpk>/', UnitView.as_view(), name='unit'),
@@ -39,4 +40,6 @@ urlpatterns = [
     path('catalog/bynamez', views.catalognamez, name='catalog'),
     path('catalog/bydatenew', views.catalogdatenew, name='catalog'),
     path('catalog/bydateold', views.catalogdateold, name='catalog'),
+
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

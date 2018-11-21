@@ -609,3 +609,4 @@ class DetailView(TemplateView):
         # print(context['images'])
         logger.info('"%s" page visited. User: %s' % (context['title'], self.request.user))
         return context
+
