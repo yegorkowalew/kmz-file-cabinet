@@ -1,15 +1,22 @@
 {% extends "base.html" %}
 {% block title %}KMZ File cabinet - {{title}} Страница {{ result_list.number }} из {{ result_list.paginator.num_pages }}.{% endblock %}
 {% block content %}
-<form>
-  <div class="row" style="padding-top: 20px;">
+<div class="row" style="padding-top: 20px">
     <div class="col-10">
-      <input type="text" class="form-control" placeholder="введите первые буквы названия">
+      <div class="alert alert-primary" role="alert" >
+        Введите название для поиска
+      </div>
+    </div>
+</div>
+<form>
+  <div class="row">
+    <div class="col-10">
+      <input type="text" class="form-control">
     </div>
   </div>
 </form>
 
-<div class="row" style="padding-top:10px;">
+<div class="row search-table" style="padding-top:10px; display:none;">
   <div class="col">
     <div class="row">
       <table class="table table-striped table-hover table-sm">

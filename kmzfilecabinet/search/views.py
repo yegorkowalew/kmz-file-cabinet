@@ -26,11 +26,18 @@ import json
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.core import serializers
+import re
 @login_required(login_url='/accounts/login/')
 def searchajax(request, name):
     # print(name + ' <')
     # data = Detail.objects.filter(designation__icontains='СМВУ').values('designation', 'nom_num')
     # ser_data =  serializers.serialize('json', data)
-    data =  serializers.serialize('json', Detail.objects.filter(designation__icontains=name))
-    # print(data)
+
+    # работающий поиск регистрозависмый ищет совпадение подряд
+    # data =  serializers.serialize('json', Detail.objects.filter(designation__icontains=name))
+
+    # тесты
+    # print(name)
+    search_re = ".*?".join(re.escape(x) for x in name)
+    data = serializers.serialize('json', Detail.objects.filter(designation__iregex=search_re))
     return HttpResponse(data, content_type='application/json')
